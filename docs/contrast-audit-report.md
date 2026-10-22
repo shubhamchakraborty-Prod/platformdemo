@@ -6,7 +6,7 @@
 | Date | 22 Oct 2026 |
 | Standard | WCAG 2.1 AA - 4.5:1 for body text, 3:1 for large text (24px+, or 18.66px+ bold) |
 | Method | Headless Chromium rendered 38 routes (learner + admin) in OS light and OS dark mode. Each visible text node's colour was measured against its real rendered background (stacked translucent layers composited; gradients checked against every colour stop). The Career Mentor iframe was audited too. |
-| Result | **833 failing text instances (208 unique) before. 0 real failures after** (see "Residual" below) |
+| Result | **835 failing text instances before (833 default state + 1 hover + 1 phone-only). 0 real failures after** (see "Residual" below) |
 
 ## 1. Summary
 
@@ -57,6 +57,8 @@
 | 21 | Inbox | Message preview | "– Explore personalised…" | 4.45 | `#555E7D` | 6.07 |
 | 22 | Signup | Hero note, "Back to log in", required `*` | "Demo signup - no email…" | 4.34-4.41 | `#C9CEF2`, `#2449D8`, `#B3261E` | 6.0-8.4 |
 | 23 | Login / Signup | Input placeholder | "Enter your email address" | 3.0 | `#6B7391` | 4.7 |
+| 24 | Home - recommendation card (**hover**) | "Drill into this" button | "Drill into this" | 1.07 (white on white) | Two `.rp-btn` rule sets collided: the default came out blue/white, the hover turned the background white. Hover now `#2B2FB0` | 9.83 |
+| 25 | Career Mentor header (**phone width**) | Progress % | "4%" | 4.33 | `#1F45C9` | 7.18 |
 
 ## 4. Residual (not fixed, by design)
 
@@ -69,16 +71,27 @@
 
 Dark mode was only partially implemented (tokens flip, components do not). Fixing it properly means re-theming every card, hero, table and the V2 layer. Locking the designed light theme removes every dark-mode failure in one change. A full dark theme can be built later as its own task.
 
-## 6. Not covered by this audit
+## 6. Extended checks (states, pop-ups, phone width)
+
+| Check | Scope | Real issues found | Status |
+|---|---|---|---|
+| Hover state | Every button, link, card and summary on 28 routes forced into `:hover` | 1 (#24) | Fixed |
+| Keyboard focus state | Same elements forced into `:focus-visible` | 0 | Pass |
+| Phone width | 30 routes at 390 × 844 (touch device) | 1 (#25) | Fixed |
+| Modals, menus, toasts | 72 pop-ups opened through their real buttons (certificate, opportunity detail, invite, add learner, add achievement, Code Conquest, snippet, forgot password, support, avatar menu, toast) | 0 | Pass |
+| Guided tour | All 6 tour steps | 0 | Pass |
+| Text over photos | Login photo and course images | 0 (no text sits on a photo) | Pass |
+
+Note: a first modal scan reported 36 failures. These were measured while the pop-up was still fading in (it starts at 50% opacity). After waiting for the animation to finish they all pass, so they are not listed.
+
+## 7. Not covered
 
 | Area | Note |
 |---|---|
-| Hover / pressed / disabled button states | Default state only. Hover-state scan not run. |
-| Modals, toasts, tour overlay | Only content visible on route load was scanned. |
-| Text over photos | Skipped by the scanner (needs manual review). |
-| Mobile widths | Audited at 1366 × 900. |
+| Pressed (`:active`) and disabled buttons | Not forced. Disabled controls are exempt under WCAG. |
+| Hindi language mode | Same colours, so the same results are expected. Not scanned separately. |
 
-## 7. Where the fixes live
+## 8. Where the fixes live
 
 | Change | Location in `mvp_prd_doc.html` |
 |---|---|
