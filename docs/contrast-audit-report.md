@@ -55,7 +55,7 @@
 | 19 | Explore, Achievements | Eyebrows, "See all", "Coming soon", "Certificate locked" | "ACHIEVEMENTS", "See all →" | 4.26-4.46 | `#2449D8`, `#1F45C9`, `#4B5063` | 6.4-7.2 |
 | 20 | Skill Passport, Help, Demo, Admin | Page eyebrows | "Skill Passport", "Admin portal" | 4.40 | `#2449D8` | 6.43 |
 | 21 | Inbox | Message preview | "– Explore personalised…" | 4.45 | `#555E7D` | 6.07 |
-| 22 | Signup | Hero note, "Back to log in", required `*` | "Demo signup — no email…" | 4.34-4.41 | `#C9CEF2`, `#2449D8`, `#B3261E` | 6.0-8.4 |
+| 22 | Signup | Hero note, "Back to log in", required `*` | "Demo signup - no email…" | 4.34-4.41 | `#C9CEF2`, `#2449D8`, `#B3261E` | 6.0-8.4 |
 | 23 | Login / Signup | Input placeholder | "Enter your email address" | 3.0 | `#6B7391` | 4.7 |
 
 ## 4. Residual (not fixed, by design)
