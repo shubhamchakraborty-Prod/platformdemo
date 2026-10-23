@@ -7457,7 +7457,7 @@ renderCareer = function(){
           <h1>${T('Continue where','जहाँ छोड़ा था')}<br><span>${T('you left off','वहीं से जारी रखें')}</span></h1>
           <div class="cc-prog"><div><i style="width:${g.pct}%"></i></div><b>${g.pct}%</b></div>
           <p>${T('Now','अभी')}: <b>${esc(g.label)}</b></p>
-          <div class="cc-acts"><button class="btn btn-primary cc-go" onclick="App.ccOpen()">${T('Continue career counselling','करियर परामर्श जारी रखें')} &rarr;</button>${done?`<button class="btn cc-go2" onclick="App.ccOpen(true)">${T('View previous report','पिछली रिपोर्ट देखें')}</button>`:''}</div>
+          <div class="cc-acts"><button class="btn btn-primary cc-go" onclick="App.ccOpen()">${T('Continue career counselling','करियर परामर्श जारी रखें')} &rarr;</button>${g.k==='paths'?`<button class="btn cc-go2" onclick="App.ccOpen(true)">${T('View your career report','अपनी करियर रिपोर्ट देखें')}</button>`:done?`<button class="btn cc-go2" onclick="App.ccOpen(true)">${T('View previous report','पिछली रिपोर्ट देखें')}</button>`:''}</div>
           <p class="cc-note">&#128274; ${T('Your answers are saved. Pause anytime.','आपके जवाब सहेजे गए हैं।')}</p></div>
         <div class="cc-hero-r">${ccJourney(g.step).replace('cc-journey','cc-journey light')}</div>
       </section></div>`;
