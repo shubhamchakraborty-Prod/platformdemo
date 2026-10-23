@@ -1,0 +1,232 @@
+'use strict';
+/* Spec A6 and B8 language pack.
+   Ported unchanged from the Course Finder reference prototype (artifact "Swift AI Academy - Find your courses (ITI)", version 1791439992-5d3c).
+   Spec: ITI Course Finder - Product and Technical Specification (7 Oct 2026). */
+
+/* ============ LANGUAGE LAYER ============
+   English text for questions and courses lives in data.js (source of truth).
+   This file holds the UI dictionary for every language, plus Hindi overrides keyed by stable IDs.
+   Adding a language = adding one more block here. No engine or questionnaire change. */
+
+const UI = {
+  en: {
+    langName:'English', langLabel:'Language', chooseLang:'Choose your language', brandTag:'Course finder for ITI',
+    eyebrow:'Swift AI Academy for ITI learners', h1:'Find the right courses for you',
+    lead:'Answer a few simple questions about your trade, your goals and what you have done before. We will suggest where to start and what to learn next.',
+    fact1:'About 5 minutes', fact2:'This is not an exam. Answer honestly.', fact3:'English or Hindi. You can switch any time.',
+    nameLabel:'What should we call you?', nameHint:'Your first name is enough. You can leave this empty.', namePh:'For example: Ramesh',
+    begin:'Let us begin', demo:'For demo: load a sample learner', demoHint:'Fills in all answers for a sample ITI learner and shows the result.',
+    part:'Part {n} of {m}', done:'{p}% done', back:'Back', cont:'Continue', finish:'Finish',
+    errOne:'Please choose one answer.', errMany:'Please choose at least one.', errText:'Please type your trade.', errMax:'You can choose up to {n}. Remove one to add another.',
+    chooseTrade:'Choose your trade', forExample:'For example:',
+    allSetH:'You are all set', allSetP:'Thank you{name}. We have everything we need to build your learning plan. Want to change anything first?',
+    edit:'Edit', showCourses:'Show my courses',
+    procH:'Building your learning plan', proc1:'Reading your answers', proc2:'Checking what each course needs', proc3:'Choosing your best path',
+    recEyebrow:'Recommended for you', recH1Name:'{name}, here is your learning plan', recH1:'Here is your learning plan',
+    recLead:'We matched your answers with each course: what it needs before you start, what it teaches, and how it helps your goals.',
+    startHere:'Start here', next:'Next', alsoLike:'You may also like', alsoHint:'Optional courses linked to your interests and goals.',
+    alsoEmpty:'More courses will open for you as you finish these. Your plan updates each time.', noStart:'We could not find a course to start with yet.',
+    yourPath:'Your path', pathHint:'Take these in order. Each one prepares you for the next.',
+    understood:'What we understood about you', changeAnswers:'Change my answers', startAgain:'Start again',
+    staffShow:'For staff: how this was matched', staffHide:'Hide how this was matched',
+    after:'After {x}', level:'Level', time:'Time', language:'Language', youLearn:'You will learn',
+    whyH:'Why this course is for you', parts:'See the course parts ({n})', startCourse:'Start course', saveLater:'Save for later',
+    langNote:'Not yet in your language. A trainer can help you.', hoursWeeks:'{h} hours, about {w} week{s} at your pace',
+    mSaved:'Saved to your plan', mAdded:'Course added', ok:'OK', close:'Close', hrsShort:'({h} hours)', preview:'Preview course', newTab:'opens in a new tab', liveTag:'Live now', liveH:'Start learning today', liveP:'{c} is open. Use an AI app for everyday tasks and check every answer. Works on your phone.', openLive:'Open Module 1', copyLink:'Copy link', copied:'Link copied. Paste it in your browser.', copyFail:'Select the link above and copy it.',
+    mSavedB:'{c} is saved. It opens once you finish the course before it.', mAddedB:'{c} is added to your courses. In the full platform, this opens your first lesson.',
+    sTrade:'Trade', sStudied:'Studied', sGoals:'Your goals', sLangs:'Languages', sPhone:'Phone', sComp:'Computer', sAI:'AI apps', sEng:'English at work',
+    speaks:'Speaks {a}. Wants to learn in {b}.', none12:' (did not study Class 12)', ownLang:'your own language', andWord:' and ',
+    stage_foundation:'Foundation', stage_skill:'Build skills', stage_applied:'Apply at work',
+    diff_beg:'Beginner', diff_mid:'Intermediate', diff_adv:'Advanced',
+    phone_none:'No smartphone yet', phone_start:'Starting out on a phone', phone_basic:'Comfortable with WhatsApp and basics', phone_conf:'Confident on a phone',
+    comp_new:'New to computers', comp_some:'Some computer use', comp_conf:'Confident on a computer',
+    ai_new:'New to AI apps', ai_tried:'Has tried AI apps', ai_tasks:'Uses AI apps for real tasks',
+    eng_basic:'Building English basics', eng_work:'Basic English at work', eng_conf:'Confident English at work',
+    status:{y1:'1st year', y2:'2nd or final year', done:'finished ITI', apprentice:'doing apprenticeship'},
+    edu:{class8:'Class 8', class10:'Class 10', class12:'Class 12', diploma:'Diploma', graduate:'Graduate', other:'Other'},
+    learn:{English:'English', Hindi:'Hindi', Both:'English and Hindi'}
+  },
+  hi: {
+    langName:'हिंदी', langLabel:'भाषा', chooseLang:'अपनी भाषा चुनें', brandTag:'ITI के लिए कोर्स खोजें',
+    eyebrow:'ITI छात्रों के लिए Swift AI Academy', h1:'अपने लिए सही कोर्स खोजें',
+    lead:'अपने ट्रेड, अपने लक्ष्य और पहले किए कामों के बारे में कुछ आसान सवालों के जवाब दें। हम बताएँगे कि कहाँ से शुरू करें और आगे क्या सीखें।',
+    fact1:'लगभग 5 मिनट', fact2:'यह कोई परीक्षा नहीं है। सच-सच जवाब दें।', fact3:'अंग्रेज़ी या हिंदी। भाषा कभी भी बदल सकते हैं।',
+    nameLabel:'हम आपको किस नाम से बुलाएँ?', nameHint:'सिर्फ़ पहला नाम काफ़ी है। आप इसे खाली भी छोड़ सकते हैं।', namePh:'जैसे: रमेश',
+    begin:'शुरू करें', demo:'डेमो के लिए: एक सैंपल छात्र चुनें', demoHint:'एक सैंपल ITI छात्र के सारे जवाब भरकर नतीजा दिखाता है।',
+    part:'भाग {n} / {m}', done:'{p}% पूरा', back:'पीछे', cont:'आगे बढ़ें', finish:'पूरा करें',
+    errOne:'कृपया एक जवाब चुनें।', errMany:'कृपया कम से कम एक चुनें।', errText:'कृपया अपना ट्रेड लिखें।', errMax:'आप ज़्यादा से ज़्यादा {n} चुन सकते हैं। नया चुनने के लिए पहले एक हटाएँ।',
+    chooseTrade:'अपना ट्रेड चुनें', forExample:'जैसे:',
+    allSetH:'सब तैयार है', allSetP:'धन्यवाद{name}। आपका लर्निंग प्लान बनाने के लिए हमारे पास सब कुछ है। पहले कुछ बदलना चाहते हैं?',
+    edit:'बदलें', showCourses:'मेरे कोर्स दिखाएँ',
+    procH:'आपका लर्निंग प्लान बन रहा है', proc1:'आपके जवाब पढ़ रहे हैं', proc2:'हर कोर्स की ज़रूरतें देख रहे हैं', proc3:'आपके लिए सबसे सही रास्ता चुन रहे हैं',
+    recEyebrow:'आपके लिए सुझाव', recH1Name:'{name}, यह रहा आपका लर्निंग प्लान', recH1:'यह रहा आपका लर्निंग प्लान',
+    recLead:'हमने आपके जवाबों को हर कोर्स से मिलाया: शुरू करने से पहले क्या चाहिए, कोर्स क्या सिखाता है, और यह आपके लक्ष्य में कैसे मदद करता है।',
+    startHere:'यहाँ से शुरू करें', next:'इसके बाद', alsoLike:'ये भी आपको पसंद आ सकते हैं', alsoHint:'आपकी रुचि और लक्ष्य से जुड़े वैकल्पिक कोर्स।',
+    alsoEmpty:'इन्हें पूरा करने पर आपके लिए और कोर्स खुलेंगे। आपका प्लान हर बार अपडेट होगा।', noStart:'अभी शुरू करने के लिए कोई कोर्स नहीं मिला।',
+    yourPath:'आपका रास्ता', pathHint:'इन्हें इसी क्रम में करें। हर कोर्स अगले के लिए तैयार करता है।',
+    understood:'हमने आपके बारे में क्या समझा', changeAnswers:'मेरे जवाब बदलें', startAgain:'फिर से शुरू करें',
+    staffShow:'स्टाफ़ के लिए: मिलान कैसे हुआ', staffHide:'मिलान की जानकारी छिपाएँ',
+    after:'{x} के बाद', level:'स्तर', time:'समय', language:'भाषा', youLearn:'आप सीखेंगे',
+    whyH:'यह कोर्स आपके लिए क्यों', parts:'कोर्स के हिस्से देखें ({n})', startCourse:'कोर्स शुरू करें', saveLater:'बाद के लिए सेव करें',
+    langNote:'अभी आपकी भाषा में नहीं है। ट्रेनर आपकी मदद कर सकते हैं।', hoursWeeks:'{h} घंटे, आपकी रफ़्तार से लगभग {w} हफ़्ते',
+    mSaved:'आपके प्लान में सेव हो गया', mAdded:'कोर्स जुड़ गया', ok:'ठीक है', close:'बंद करें', hrsShort:'({h} घंटे)', preview:'कोर्स देखें', newTab:'नए टैब में खुलेगा', liveTag:'अभी उपलब्ध', liveH:'आज ही सीखना शुरू करें', liveP:'{c} खुला है। रोज़ के कामों में AI ऐप इस्तेमाल करें और हर जवाब जाँचें। आपके फ़ोन पर चलता है।', openLive:'मॉड्यूल 1 खोलें', copyLink:'लिंक कॉपी करें', copied:'लिंक कॉपी हो गया। इसे अपने ब्राउज़र में पेस्ट करें।', copyFail:'ऊपर दिया लिंक चुनकर कॉपी करें।',
+    mSavedB:'{c} सेव हो गया है। इससे पहले वाला कोर्स पूरा होने पर यह खुलेगा।', mAddedB:'{c} आपके कोर्स में जुड़ गया है। पूरे प्लेटफ़ॉर्म में यहाँ से आपका पहला पाठ खुलेगा।',
+    sTrade:'ट्रेड', sStudied:'पढ़ाई', sGoals:'आपके लक्ष्य', sLangs:'भाषाएँ', sPhone:'फ़ोन', sComp:'कंप्यूटर', sAI:'AI ऐप्स', sEng:'काम पर अंग्रेज़ी',
+    speaks:'बोलते हैं: {a}। सीखना चाहते हैं: {b}।', none12:' (कक्षा 12 नहीं पढ़ी)', ownLang:'अपनी भाषा में', andWord:' और ',
+    stage_foundation:'नींव', stage_skill:'स्किल बनाएँ', stage_applied:'काम में इस्तेमाल',
+    diff_beg:'शुरुआती', diff_mid:'मध्यम', diff_adv:'उन्नत',
+    phone_none:'अभी स्मार्टफ़ोन नहीं', phone_start:'फ़ोन चलाना अभी सीख रहे हैं', phone_basic:'WhatsApp और बुनियादी काम आसानी से कर लेते हैं', phone_conf:'फ़ोन अच्छे से चला लेते हैं',
+    comp_new:'कंप्यूटर अभी नया है', comp_some:'कंप्यूटर थोड़ा-बहुत चलाया है', comp_conf:'कंप्यूटर अच्छे से चला लेते हैं',
+    ai_new:'AI ऐप्स अभी नए हैं', ai_tried:'AI ऐप्स आज़माए हैं', ai_tasks:'असली कामों में AI ऐप्स इस्तेमाल करते हैं',
+    eng_basic:'अंग्रेज़ी की शुरुआत कर रहे हैं', eng_work:'काम पर बुनियादी अंग्रेज़ी', eng_conf:'काम पर अंग्रेज़ी में भरोसा',
+    status:{y1:'पहला साल', y2:'दूसरा या आख़िरी साल', done:'ITI पूरा किया', apprentice:'अप्रेंटिसशिप कर रहे हैं'},
+    edu:{class8:'कक्षा 8', class10:'कक्षा 10', class12:'कक्षा 12', diploma:'डिप्लोमा', graduate:'ग्रेजुएट', other:'अन्य'},
+    learn:{English:'अंग्रेज़ी में', Hindi:'हिंदी में', Both:'अंग्रेज़ी और हिंदी में'}
+  }
+};
+
+/* ---- Section intros: the first screen of each part opens with one friendly line ---- */
+const SECTION_INTRO = {
+  en:['Let us start with what you are learning at ITI.','A little about your school studies.','Now the important part: what you want to do next.',
+      'Tell us what you have done before. Every answer is fine.','A few questions about apps that answer you like a person.',
+      'Which languages you know. Not knowing English is fine.','A few everyday work situations. Pick what you would really do.','Last question. You are almost done.'],
+  hi:['चलिए, ITI में आप क्या सीख रहे हैं, उससे शुरू करते हैं।','अपनी स्कूल की पढ़ाई के बारे में थोड़ा बताइए।','अब सबसे ज़रूरी बात: आप आगे क्या करना चाहते हैं।',
+      'बताइए आपने पहले क्या-क्या किया है। हर जवाब ठीक है।','ऐसे ऐप्स के बारे में कुछ सवाल जो इंसान की तरह जवाब देते हैं।',
+      'आप कौन-सी भाषाएँ जानते हैं। अंग्रेज़ी न आना भी ठीक है।','काम की कुछ रोज़ की स्थितियाँ। वही चुनें जो आप सच में करेंगे।','आख़िरी सवाल। बस हो गया।']
+};
+
+/* ---- Hindi overrides ---- */
+const HI = {
+  sections:['आपका ट्रेड','आपकी पढ़ाई','आपके लक्ष्य','फ़ोन और कंप्यूटर','AI ऐप्स','भाषाएँ','बोलना और लिखना','आपका समय'],
+  screens:{ iti:'चलिए, आपके ITI से शुरू करते हैं', studies:'आपकी पढ़ाई', goals:'आपके लक्ष्य', enjoy:'आपको क्या पसंद है', job:'नौकरी की बात',
+    phone:'आपका फ़ोन', computer:'कंप्यूटर', ai:'AI ऐप्स', think:'ज़रा सोचिए', langs:'आपकी भाषाएँ', learnlang:'सीखने की भाषा',
+    speak:'काम पर बातचीत', situations:'दो छोटी स्थितियाँ', donebefore:'आपने क्या-क्या किया है', time:'आपका समय' },
+  trades:{ electrician:'इलेक्ट्रीशियन (Electrician)', fitter:'फिटर (Fitter)', welder:'वेल्डर, गैस और इलेक्ट्रिक (Welder)', mech_diesel:'मैकेनिक डीज़ल (Mechanic Diesel)',
+    mech_mv:'मैकेनिक मोटर व्हीकल (Mechanic Motor Vehicle)', electronics:'इलेक्ट्रॉनिक्स मैकेनिक (Electronics Mechanic)', copa:'COPA (कंप्यूटर ऑपरेटर एंड प्रोग्रामिंग असिस्टेंट)',
+    ictsm:'ICTSM (इन्फ़ॉर्मेशन एंड कम्युनिकेशन टेक्नोलॉजी सिस्टम मेंटेनेंस)', dm_civil:'ड्राफ़्ट्समैन सिविल (Draughtsman Civil)', dm_mech:'ड्राफ़्ट्समैन मैकेनिकल (Draughtsman Mechanical)',
+    rac:'रेफ्रिजरेशन और एयर कंडीशनिंग टेक्नीशियन (RAC)', turner:'टर्नर (Turner)', machinist:'मशीनिस्ट (Machinist)', plumber:'प्लंबर (Plumber)', wireman:'वायरमैन (Wireman)',
+    sewing:'सिलाई टेक्नोलॉजी (Sewing Technology)', other:'अन्य (अपना ट्रेड लिखें)' },
+  langs:{ Hindi:'हिंदी', English:'अंग्रेज़ी', Bengali:'बांग्ला', Marathi:'मराठी', Telugu:'तेलुगु', Tamil:'तमिल', Gujarati:'गुजराती', Urdu:'उर्दू',
+    Kannada:'कन्नड़', Odia:'ओड़िया', Malayalam:'मलयालम', Punjabi:'पंजाबी', Assamese:'असमिया', Other:'अन्य' },
+  q:{
+    trade:{q:'आप कौन-सा ट्रेड सीख रहे हैं?'},
+    tradeOther:{q:'अपना ट्रेड लिखें', ph:'जैसे: पेंटर जनरल'},
+    itiStatus:{q:'आपका ITI कोर्स अभी किस साल में है?', o:{y1:'पहला साल चल रहा है', y2:'दूसरा या आख़िरी साल चल रहा है', done:'ITI पूरा हो गया है', apprentice:'अभी अप्रेंटिसशिप चल रही है'}},
+    education:{q:'ITI से पहले आपने कौन-सी कक्षा पास की?', o:{class8:'कक्षा 8', class10:'कक्षा 10', class12:'कक्षा 12', diploma:'डिप्लोमा', graduate:'ग्रेजुएट (BA, BCom, BSc या कोई और)', other:'अन्य'}},
+    stream:{q:'कक्षा 12 में आपने कौन-से विषय पढ़े?', o:{science:'साइंस', commerce:'कॉमर्स', arts:'आर्ट्स', vocational:'वोकेशनल विषय', none12:'मैंने कक्षा 12 नहीं पढ़ी'}},
+    workExp:{q:'क्या आपने पहले कभी काम किया है? कोई भी नौकरी, दुकान या घर का काम गिना जाएगा।', o:{none:'नहीं, अभी नहीं', helper:'हाँ, हेल्पर के रूप में या घर के काम में', job:'हाँ, किसी नौकरी या अप्रेंटिसशिप में'}},
+    goals:{q:'ITI के बाद आप क्या करना चाहते हैं?', hint:'ज़्यादा से ज़्यादा 3 चुनें', o:{private_job:'प्राइवेट कंपनी में नौकरी', govt_job:'सरकारी नौकरी', apprenticeship:'अप्रेंटिसशिप करना',
+      trade_work:'अपने ट्रेड में टेक्नीशियन का काम', business:'अपना बिज़नेस या दुकान शुरू करना', freelance:'खुद का काम करना और ऑर्डर लेना', study_further:'आगे पढ़ाई (डिप्लोमा या डिग्री)',
+      tech_career:'कंप्यूटर या टेक्नोलॉजी में काम', improve_english:'नौकरी से पहले बेहतर अंग्रेज़ी बोलना', not_sure:'अभी पक्का नहीं पता'}},
+    workType:{q:'आपको किस तरह का काम सबसे अच्छा लगता है?', o:{machines:'मशीनों और औज़ारों के साथ काम', computers:'कंप्यूटर पर काम', people:'लोगों के साथ काम, जैसे ग्राहक या टीम', mix:'इन सबका मेल'}},
+    interests:{q:'इनमें से क्या आपको दिलचस्प लगता है?', hint:'जितने चाहें चुनें', o:{computers:'कंप्यूटर के बारे में और सीखना', ai:'ChatGPT जैसे AI ऐप्स', build:'अपना ऐप या चैटबॉट बनाना',
+      design:'पोस्टर या वीडियो बनाना', repair:'चीज़ें ठीक करना और रिपेयर करना', customers:'ग्राहकों से बात करना और बेचना', lead:'आगे चलकर टीम को लीड करना', none:'इनमें से कोई नहीं'}},
+    jobTiming:{q:'आप काम कब से शुरू करना चाहते हैं?', o:{now:'जितनी जल्दी हो सके', six:'अगले 6 महीनों में', later:'1 साल या उसके बाद', study:'पहले आगे की पढ़ाई'}},
+    interviews:{q:'क्या आपने कभी जॉब इंटरव्यू दिया है?', o:{never:'नहीं, कभी नहीं', few:'हाँ, एक-दो बार', many:'हाँ, 3 या उससे ज़्यादा बार'}},
+    relocate:{q:'क्या आप नौकरी के लिए दूसरे शहर जा सकते हैं?', o:{yes:'हाँ', nearby:'सिर्फ़ पास के शहर में', no:'नहीं', notsure:'पक्का नहीं पता'}},
+    phone:{q:'क्या आप स्मार्टफ़ोन इस्तेमाल करते हैं?', o:{own:'हाँ, मेरा अपना फ़ोन', shared:'हाँ, परिवार के किसी सदस्य का फ़ोन', none:'नहीं'}},
+    phoneDone:{q:'फ़ोन पर इनमें से आपने क्या-क्या किया है?', hint:'जितने चाहें चुनें', o:{msg:'WhatsApp पर मैसेज भेजे हैं', pdf:'WhatsApp पर फ़ोटो या PDF भेजी है', youtube:'YouTube से कुछ सीखा है',
+      search:'Google पर कुछ खोजा है', form:'ऑनलाइन फ़ॉर्म भरा है', upi:'UPI से पेमेंट किया है (PhonePe, GPay, Paytm)', email:'ईमेल भेजा है', maps:'Google Maps इस्तेमाल किया है', none:'इनमें से कुछ नहीं'}},
+    computerUse:{q:'क्या आपने कभी कंप्यूटर या लैपटॉप चलाया है?', o:{never:'कभी नहीं', few:'कुछ बार', often:'अक्सर, हर हफ़्ते'}},
+    computerDone:{q:'कंप्यूटर पर इनमें से आपने क्या-क्या किया है?', hint:'जितने चाहें चुनें', o:{doc:'डॉक्यूमेंट टाइप किया है (Word या Google Docs)', sheet:'Excel या Google Sheets में टेबल बनाई है',
+      slides:'प्रेज़ेंटेशन बनाया है (PowerPoint)', email:'ईमेल भेजा है', code:'कंप्यूटर कोड लिखा है', design:'पोस्टर बनाया है या वीडियो एडिट किया है', cad:'AutoCAD या कोई ड्रॉइंग सॉफ़्टवेयर चलाया है', course:'कोई ऑनलाइन कोर्स किया है', none:'इनमें से कुछ नहीं'}},
+    computerAccess:{q:'ज़रूरत पड़ने पर क्या आप कंप्यूटर इस्तेमाल कर पाते हैं?', o:{iti:'हाँ, ITI में', home:'हाँ, घर पर या साइबर कैफ़े में', no:'नहीं'}},
+    aiUsed:{q:'क्या आपने कोई ऐसा ऐप इस्तेमाल किया है जिसमें आप सवाल टाइप करें या बोलें, और वह इंसान की तरह जवाब दे?', o:{yes:'हाँ, इस्तेमाल किया है', no:'नहीं, कभी नहीं', notsure:'पक्का नहीं पता'}},
+    aiTools:{q:'आपने कौन-से इस्तेमाल किए हैं?', o:{Other:'अन्य'}},
+    aiFreq:{q:'आप इसे कितनी बार इस्तेमाल करते हैं?', o:{once:'एक-दो बार आज़माया है', month:'महीने में कुछ बार', week:'हर हफ़्ते'}},
+    aiPurpose:{q:'आपने इसे किस काम के लिए इस्तेमाल किया?', hint:'जितने चाहें चुनें', o:{doubts:'पढ़ाई के डाउट दूर करने', trade:'अपने ट्रेड के काम के सवाल', writing:'मैसेज, चिट्ठी या अर्ज़ी लिखने',
+      translate:'भाषा का अनुवाद करने', cv:'CV बनाने', images:'फ़ोटो या वीडियो बनाने', code:'कोड लिखने', fun:'बस मज़े के लिए या बातचीत'}},
+    aiCheck:{q:'आप क्या करेंगे?', who:'सोचिए', text:'एक AI ऐप आपको वर्कशॉप के काम के लिए एक माप बताता है।', o:{use:'सीधे इस्तेमाल करना', check:'पहले ट्रेड की किताब में देखना या इंस्ट्रक्टर से पूछना', skip:'इस काम के लिए AI इस्तेमाल नहीं करना'}},
+    scam:{q:'आप क्या करेंगे?', who:'आपको WhatsApp पर एक मैसेज आता है', text:'"सरकारी नौकरी में आपका चयन हो गया है। पक्का करने के लिए आज ही Rs 2,000 भेजें।"',
+      o:{pay:'जल्दी पैसे भेजना, ताकि मौका न छूटे', call:'और जानने के लिए उस नंबर पर फ़ोन करना', check:'मैसेज को अनदेखा करना और सरकारी वेबसाइट या अपने ITI से पता करना'}},
+    speak:{q:'आप कौन-सी भाषाएँ आसानी से बोल लेते हैं?'},
+    read:{q:'आप कौन-सी भाषाएँ आसानी से पढ़ लेते हैं?'},
+    learnLang:{q:'आप किस भाषा में सीखना चाहते हैं?', hint:'अंग्रेज़ी न आना ठीक है। कई कोर्स हिंदी में भी हैं।', o:{English:'अंग्रेज़ी', Hindi:'हिंदी', Both:'अंग्रेज़ी और हिंदी दोनों', Regional:'मेरी अपनी भाषा (अंग्रेज़ी या हिंदी नहीं)'}},
+    introEnglish:{q:'क्या आपने कभी अंग्रेज़ी में अपना परिचय दिया है? जैसे क्लास में, इंटरव्यू में या किसी मेहमान को।', o:{many:'हाँ, कई बार', few:'हाँ, एक-दो बार', never:'नहीं, कभी नहीं'}},
+    // English-reading checks keep the English text on purpose: they measure English, so only the frame is translated
+    scenarioInstr:{q:'आप क्या करेंगे?', who:'आपके सुपरवाइज़र अंग्रेज़ी में कहते हैं', o:{reply_en:'मुझे समझ आ गया, और अंग्रेज़ी में जवाब देना आता है', reply_own:'मुझे समझ आ गया, पर जवाब हिंदी या अपनी भाषा में देना आसान है', ask:'कोई समझाए, तब समझ आएगा'}},
+    readNotice:{q:'ID कार्ड कब लाना है?', who:'वर्कशॉप बोर्ड पर अंग्रेज़ी में नोटिस', o:{monday:'सोमवार (Monday)', tuesday:'मंगलवार (Tuesday)', notsure:'पक्का नहीं पता'}},
+    customerReply:{q:'कौन-सा जवाब सबसे अच्छा है?', who:'एक ग्राहक कहता है', text:'"आपने जो पंखा ठीक किया था, वह अब भी नहीं चल रहा।"',
+      o:{a:'"यह मेरी समस्या नहीं है।"', b:'"परेशानी के लिए माफ़ कीजिए। आज ही दोबारा जाँच कर दी जाएगी।"', c:'"अगले हफ़्ते फ़ोन करना।"'}},
+    commDone:{q:'इनमें से आपने पहले क्या-क्या किया है?', hint:'जितने चाहें चुनें', o:{email:'ईमेल लिखा है', letter:'छुट्टी की अर्ज़ी या चिट्ठी लिखी है', cv:'CV (रिज़्यूमे) बनाया है', jobform:'ऑनलाइन नौकरी के लिए आवेदन किया है',
+      talk:'क्लास के सामने बोला है', gd:'ग्रुप डिस्कशन में हिस्सा लिया है', customers:'ग्राहकों से बात की है', explain:'किसी जूनियर या नए व्यक्ति को काम समझाया है',
+      lead:'छोटी टीम या ग्रुप वर्क को लीड किया है', diary:'अंग्रेज़ी में जॉब कार्ड या रोज़ की वर्क डायरी लिखी है', none:'इनमें से कुछ नहीं'}},
+    weeklyTime:{q:'हर हफ़्ते आप सीखने के लिए कितना समय दे सकते हैं?', o:{low:'1 से 2 घंटे', mid:'3 से 5 घंटे', high:'5 घंटे से ज़्यादा'}}
+  },
+  cat:{ comm:'बातचीत', career:'नौकरी की तैयारी', aif:'AI की शुरुआत', aiapp:'AI का इस्तेमाल', bot:'बॉट बनाना', data:'डेटा और कोड' },
+  skill:{ phone_typing:'फ़ोन पर टाइप करना', file_sharing:'फ़ाइल भेजना', web_search:'ऑनलाइन खोजना', online_forms:'ऑनलाइन फ़ॉर्म', email_use:'ईमेल की शुरुआत',
+    computer_basics:'कंप्यूटर की शुरुआत', doc_typing:'डॉक्यूमेंट टाइप करना', spreadsheet:'स्प्रेडशीट', slides:'प्रेज़ेंटेशन', coding_basics:'कोडिंग', design_tools:'डिज़ाइन ऐप्स',
+    ai_aware:'AI ऐप्स को जानना', ai_first_use:'AI ऐप चलाना', ai_prompting:'AI से साफ़ सवाल पूछना', ai_verification:'AI के जवाब जाँचना', ai_task_use:'असली कामों में AI',
+    ai_safety:'ऑनलाइन सुरक्षित रहना', ai_method:'AI इस्तेमाल का अपना तरीका', bot_building:'चैटबॉट बनाना', python_data:'डेटा के लिए Python',
+    eng_basic:'अपना परिचय देना', eng_instructions:'निर्देश समझना', eng_reading:'नोटिस पढ़ना', eng_forms_writing:'फ़ॉर्म भरना', trade_talk:'ट्रेड की बातचीत',
+    customer_talk:'ग्राहकों से बात करना', job_cards_logs:'जॉब कार्ड और लॉग', email_writing:'काम के ईमेल', interview_skills:'इंटरव्यू के जवाब', gd_skills:'ग्रुप डिस्कशन',
+    spoken_clarity:'साफ़ बोलना', cv_writing:'CV बनाना', team_instructions:'टीम को निर्देश देना', reporting_upward:'सीनियर को रिपोर्ट करना', handover_writing:'हैंडओवर नोट्स',
+    delegation:'काम बाँटना', management_reports:'मैनेजमेंट रिपोर्ट', people_leadership:'लोगों का नेतृत्व', executive_comm:'एग्ज़ीक्यूटिव कम्युनिकेशन' },
+  gap:{ phone_typing:'आप अभी फ़ोन पर टाइप करना सीख रहे हैं', file_sharing:'आपने अभी तक WhatsApp पर PDF या फ़ोटो नहीं भेजी है', web_search:'आपने अभी तक ऑनलाइन जानकारी नहीं खोजी है',
+    online_forms:'आपने अभी तक कोई ऑनलाइन फ़ॉर्म नहीं भरा है', email_use:'आपने अभी तक ईमेल इस्तेमाल नहीं किया है', computer_basics:'आपने अभी कंप्यूटर ज़्यादा नहीं चलाया है',
+    doc_typing:'आपने अभी तक कंप्यूटर पर डॉक्यूमेंट टाइप नहीं किया है', spreadsheet:'आपने अभी तक Excel या Google Sheets इस्तेमाल नहीं किया है', slides:'आपने अभी तक प्रेज़ेंटेशन नहीं बनाया है',
+    coding_basics:'आपने अभी तक कोड नहीं लिखा है', design_tools:'आपने अभी तक कोई डिज़ाइन या वीडियो ऐप इस्तेमाल नहीं किया है', ai_aware:'AI ऐप्स आपके लिए नए हैं',
+    ai_first_use:'आपने अभी तक कोई AI ऐप इस्तेमाल नहीं किया है', ai_prompting:'आपने अभी तक AI से साफ़ सवाल पूछने का अभ्यास नहीं किया है',
+    ai_verification:p=> p.a.aiUsed==='yes' && p.a.aiCheck==='use' ? 'आपने बताया कि आप AI का जवाब बिना जाँचे इस्तेमाल कर लेंगे' : 'आपने अभी तक AI के जवाब इस्तेमाल से पहले जाँचना नहीं सीखा है',
+    ai_task_use:'आप अभी पढ़ाई या ट्रेड के काम में AI इस्तेमाल नहीं करते',
+    ai_safety:p=> p.a.scam && p.a.scam!=='check' ? 'आपने बताया कि आप "नौकरी पक्की करने के लिए पैसे भेजें" वाले मैसेज का जवाब दे सकते हैं' : 'आपने अभी तक नकली मैसेज पहचानना और अपना डेटा सुरक्षित रखना नहीं सीखा है',
+    ai_method:'आपके पास अभी AI इस्तेमाल करने का कोई पक्का, जाँचा हुआ तरीका नहीं है', bot_building:'आपने अभी तक चैटबॉट नहीं बनाया है', python_data:'आपने अभी तक कोड से डेटा पर काम नहीं किया है',
+    eng_basic:'आपने अभी तक अंग्रेज़ी में अपना परिचय नहीं दिया है', eng_instructions:'अंग्रेज़ी के निर्देश समझने में आपको कभी-कभी मदद चाहिए', eng_reading:'अंग्रेज़ी में छोटे नोटिस पढ़ना आपके लिए अभी नया है',
+    eng_forms_writing:'आपने अभी तक अंग्रेज़ी में चिट्ठी नहीं लिखी या फ़ॉर्म नहीं भरा है', trade_talk:'आप अभी अंग्रेज़ी में ट्रेड के काम और सुरक्षा के बारे में नहीं बताते',
+    customer_talk:'ग्राहकों से विनम्रता से बात करना आपके लिए अभी नया है', job_cards_logs:'आपने अभी तक अंग्रेज़ी में जॉब कार्ड या काम की डायरी नहीं लिखी है',
+    email_writing:'आपने अभी तक काम का ईमेल नहीं लिखा है', interview_skills:p=> p.a.interviews==='never' ? 'आपने अभी तक कोई जॉब इंटरव्यू नहीं दिया है' : 'आपने अब तक सिर्फ़ एक-दो इंटरव्यू दिए हैं',
+    gd_skills:'आपने अभी तक ग्रुप डिस्कशन में हिस्सा नहीं लिया है', spoken_clarity:'आप अभी तक किसी ग्रुप के सामने नहीं बोले हैं', cv_writing:'आपने अभी तक अपना CV नहीं बनाया है',
+    team_instructions:'आपने अभी तक किसी टीम को निर्देश नहीं दिए हैं', reporting_upward:'आपने अभी तक टीम के काम की रिपोर्ट सीनियर को नहीं दी है', handover_writing:'आपने अभी तक हैंडओवर नोट्स नहीं लिखे हैं',
+    delegation:'आपने अभी तक दूसरों को काम नहीं बाँटा है', management_reports:'आपने अभी तक मैनेजमेंट रिपोर्ट नहीं लिखी है', people_leadership:'आपने अभी तक मैनेजर के रूप में लोगों को नहीं संभाला है',
+    executive_comm:'एग्ज़ीक्यूटिव कम्युनिकेशन आपके लिए नया है' },
+  goal:{ private_job:'प्राइवेट कंपनी में नौकरी पाना', govt_job:'सरकारी नौकरी पाना', apprenticeship:'अप्रेंटिसशिप करना', trade_work:'अपने ट्रेड में काम करना',
+    business:'अपना बिज़नेस शुरू करना', freelance:'खुद का काम करना', study_further:'आगे पढ़ाई करना', tech_career:'कंप्यूटर और टेक्नोलॉजी में काम करना',
+    improve_english:'नौकरी से पहले बेहतर अंग्रेज़ी बोलना', not_sure:'अपने विकल्प समझना', lead_team:'आगे चलकर टीम को लीड करना' },
+  interest:{ computers:'कंप्यूटर', ai:'AI ऐप्स', build:'ऐप और चैटबॉट बनाने', design:'पोस्टर और वीडियो', repair:'चीज़ें ठीक करने', customers:'ग्राहकों और बिक्री', lead:'टीम को लीड करने' },
+  course:{
+    'COM-L12':{one:'काम पर लोगों से मिलना, निर्देश समझना, नोटिस पढ़ना और फ़ॉर्म भरना।', promise:'यह कोर्स आपको अंग्रेज़ी में नमस्ते करना, अपना परिचय देना, निर्देश समझना और आसान फ़ॉर्म भरना, कदम-दर-कदम सिखाता है।'},
+    'COM-L3':{one:'ट्रेड के काम, सुरक्षा, ग्राहकों और जॉब कार्ड के बारे में भरोसे से बात करें।', promise:'यह कोर्स आपको अपना काम और सुरक्षा के कदम समझाना, ग्राहकों से बात करना, और जॉब कार्ड व रोज़ का लॉग लिखना सिखाता है।'},
+    'COM-L4':{one:'टीम को साफ़ निर्देश दें, सीनियर को रिपोर्ट करें और हैंडओवर नोट्स लिखें।', promise:'यह कोर्स आपको छोटी टीम चलाने, सीनियर को समस्या बताने और अगली शिफ़्ट के लिए हैंडओवर नोट्स लिखने के लिए तैयार करता है।'},
+    'COM-L5':{one:'काम बाँटें, टीम को सिखाएँ और मैनेजमेंट के लिए रिपोर्ट लिखें।', promise:'यह कोर्स आपको काम बाँटना, लोगों को सिखाना और ऐसी रिपोर्ट लिखना सिखाता है जिस पर मैनेजर कदम उठाएँ।'},
+    'CO01':{one:'ध्यान से सुनें, अच्छे सवाल पूछें और क्रम से साफ़ बोलें।', promise:'यह छोटा कोर्स आपको दूसरों के सामने साफ़ और भरोसे से बोलना, और समझ न आने पर सवाल पूछना सिखाता है।'},
+    'CO02':{one:'छोटे ईमेल और काम के अपडेट लिखें जिन पर लोग काम करें।', promise:'यह छोटा कोर्स आपको साफ़ काम का ईमेल और छोटा स्टेटस अपडेट लिखना सिखाता है।'},
+    'CO03':{one:'इंटरव्यू के जवाबों का अभ्यास करें और ग्रुप डिस्कशन में बोलें।', promise:'यह छोटा कोर्स आपको परिचय देने, इंटरव्यू के आम सवालों और ग्रुप डिस्कशन का अभ्यास कराता है।'},
+    'AIF-1':{one:'अपने फ़ोन से सहज हों और देखें कि AI ऐप क्या कर सकता है।', promise:'यह कोर्स बिल्कुल शुरुआत से है। आप फ़ोन पर टाइप करना, खोजना और शेयर करना सीखेंगे, और AI ऐप से अपना पहला सवाल पूछेंगे।'},
+    'AIF-2':{one:'रोज़ के कामों के लिए AI ऐप, ऑनलाइन फ़ॉर्म और ईमेल इस्तेमाल करें।', promise:'यह कोर्स आपको AI ऐप चलाना, ऑनलाइन फ़ॉर्म भरना और रोज़ के कामों के लिए ईमेल भेजना सिखाता है।'},
+    'AAI-MC1':{one:'असली कामों में AI ऐप इस्तेमाल करें और हर जवाब इस्तेमाल से पहले जाँचें।', promise:'इस कोर्स में आप फ़ोन पर असली कामों के लिए AI ऐप चलाते हैं, साफ़ सवाल पूछना सीखते हैं, और भरोसा करने से पहले तथ्य और नंबर जाँचते हैं।'},
+    'AAI-MC2':{one:'अपने ट्रेड, पढ़ाई या रोज़ की ज़िंदगी में AI इस्तेमाल करें, फिर नए काम खुद करें।', promise:'यह कोर्स आपको जॉब कार्ड, एस्टिमेट, सेफ़्टी ब्रीफ़ और पढ़ाई के नोट्स के लिए AI इस्तेमाल करना, और फिर नए काम खुद करना सिखाता है।'},
+    'AAI-MC3':{one:'गलत AI जवाब, नकली मैसेज और धोखाधड़ी पहचानें, और अपना डेटा सुरक्षित रखें।', promise:'यह कोर्स आपको नकली नौकरी के मैसेज, नकली आवाज़ और एडिट की गई फ़ोटो पहचानना, और अपनी निजी जानकारी सुरक्षित रखना सिखाता है।'},
+    'AAI-MC4':{one:'हर हफ़्ते के किसी काम के लिए AI इस्तेमाल का अपना जाँचा हुआ तरीका बनाएँ।', promise:'इस कोर्स में आप हर हफ़्ते के एक काम के लिए AI का जाँचा हुआ तरीका बनाते हैं और उसे चलाकर दिखाते हैं।'},
+    'AI01':{one:'डेटा टेबल को लोड, साफ़ और सारांश करने के लिए आसान Python लिखें।', promise:'यह कोर्स डेटा और AI के काम की ओर पहला कदम है। आप टेबल साफ़ करने और सही सारांश बनाने के लिए आसान Python लिखते हैं।'},
+    'BOT-1':{one:'SwiftChat पर एक आसान चैटबॉट बनाएँ जो असली सवालों के जवाब दे।', promise:'इस कोर्स में आप SwiftChat पर अपना चैटबॉट प्लान करके बनाते हैं, जैसे एक बॉट जो आपकी सर्विस के बारे में ग्राहकों के सवालों का जवाब दे।'},
+    'CR-CV1':{one:'एक पेज का CV बनाएँ और बिना गलती के ऑनलाइन नौकरी के लिए आवेदन करें।', promise:'यह छोटा कोर्स आपको एक पेज का CV बनाना और सुरक्षित तरीके से ऑनलाइन आवेदन करना सिखाता है।'}
+  },
+  personas:{ ramesh:'इलेक्ट्रीशियन, फ़ोन और AI के लिए बिल्कुल नया', priya:'COPA छात्रा, कंप्यूटर में सहज', arjun:'फिटर, अभी प्राइवेट नौकरी ढूँढ रहा है',
+    salim:'वेल्डर, सरकारी नौकरी चाहता है', kavya:'इलेक्ट्रॉनिक्स मैकेनिक, AI और बनाने में रुचि', meena:'सिलाई टेक्नोलॉजी, अपनी दुकान चाहती है' }
+};
+
+/* ---- Explanation packs for the engine: same interface, any language ---- */
+function makeTextPack(lang, D){
+  if(lang!=='hi') return null;               // engine uses its built-in English pack
+  const g = (s,p)=>{ const v=HI.gap[s]; return typeof v==='function' ? v(p) : (v || (typeof D.SKILLS[s].gap==='function'?D.SKILLS[s].gap(p):D.SKILLS[s].gap)); };
+  return {
+    gap:g, goal:k=>HI.goal[k]||D.GOALS[k].phrase, interest:k=>HI.interest[k]||D.INTERESTS[k].phrase,
+    promise:c=>(HI.course[c.id]||{}).promise||c.promise, name:c=>c.name,
+    trade:p=> p.trade==='other' ? p.tradeLabel : (HI.trades[p.trade]||p.tradeLabel).replace(/\s*\(.*\)$/,''),
+    join:a=> a.length<=1 ? (a[0]||'') : a.slice(0,-1).join(', ')+' और '+a[a.length-1],
+    t:{
+      sentence:x=>x+'।',
+      riskGoal:gl=>`यह ${gl} के आपके प्लान के लिए ज़रूरी है।`,
+      goalLead:(gl,gap,imp)=> imp ? `आपने कहा कि आप ${gl} चाहेंगे, और ${gap}।` : `आपने बताया कि आप ${gl} चाहते हैं, और ${gap}।`,
+      also:gap=>`साथ ही, ${gap}।`,
+      gateway:'यह आपके लिए सबसे अच्छा पहला कदम है, क्योंकि बाकी कोर्स इसी पर बनते हैं।',
+      follow:n=>`${n} पूरा करने के बाद यह अगला सही कदम है।`,
+      later:n=>`आप यह कोर्स ${n} के बाद कर सकते हैं।`,
+      interest:l=>`आपने बताया कि आपको ${l} में रुचि है।`,
+      trade:tr=>`आप ${tr} के काम के उदाहरणों से अभ्यास करेंगे।`,
+      urgency:w=>`आप जल्दी काम शुरू करना चाहते हैं, और यह आपकी रफ़्तार से लगभग ${w} हफ़्ते में पूरा होगा।`
+    }
+  };
+}
+
+module.exports = { UI, SECTION_INTRO, HI, makeTextPack };

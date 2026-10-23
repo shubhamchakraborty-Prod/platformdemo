@@ -1,0 +1,14 @@
+{
+  "name": "swift-course-finder-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Course Finder backend for the Swift AI Academy career counsellor bot. Implements the ITI Course Finder Product and Technical Specification (7 Oct 2026).",
+  "main": "src/server.js",
+  "bin": { "course-finder-api": "bin/start.js" },
+  "scripts": {
+    "start": "node bin/start.js",
+    "test": "node --test test/*.test.js"
+  },
+  "engines": { "node": ">=18" },
+  "license": "UNLICENSED"
+}
