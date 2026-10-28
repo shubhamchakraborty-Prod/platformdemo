@@ -1,13 +1,12 @@
 # Future Skills Labs and Swift AI Academy
 
-One self-contained page with two tabs. No login.
+One self-contained page with three tabs. No login.
 
-| Tab | Audience | Contents |
-|---|---|---|
-| Future Skills Labs (`#/labs`) | Schools | 7 labs, "School level". Each lab plays on the same page, in the same tab. |
-| Swift AI Academy (`#/academy`) | Higher education | Applied AI ("NSQF Level 4"), Communication Skills (Levels 1-8), Vibe Coding, and upcoming OEM and learning-provider courses. |
-
-Communication Skills Level 1 opens a samples view (`#/samples/communication-level-1`) with 13 web samples and 3 Google Drive asset folders. These open in a new tab.
+| Tab | Contents |
+|---|---|
+| Future Skills Labs (`#/labs`) | For schools. 7 labs, "School level". Each lab plays on the same page, in the same tab. |
+| Swift AI Academy (`#/academy`) | Higher education. Applied AI 1 ("NSQF Level 4", plays on the page). Communication Skills "NSQF Level 1": Module 1 samples (13 web samples, 3 Google Drive asset folders, open in a new tab). Upcoming: Applied AI Levels 1-4, Communication Skills Levels 2-8. |
+| OEMs and Domains (`#/oem`) | Upcoming courses from Google, Snowflake, Intel, AWS and Britannica, plus 6 domains. All "Coming soon". |
 
 ## Deploy on Netlify
 
@@ -22,10 +21,10 @@ All data is near the bottom of `index.html`.
 
 | To | Edit |
 |---|---|
-| Courses and labs | `COURSES`. Add `url` to make one playable. Thumbnail is `images/courses/<id>.webp` (800 x 500). |
-| Upcoming level entries | `UPCOMING_LEVELS` |
+| Labs and playable courses | `COURSES`. Thumbnail is `images/courses/<id>.webp` (800 x 500). |
+| Communication samples | `COMM_L1` |
+| Upcoming levels | `UPCOMING` |
 | Providers and domains | `PROVIDERS`, `DOMAINS` |
-| Communication samples | `SAMPLE_SETS` |
 
 ## Implementation notes (communication samples)
 

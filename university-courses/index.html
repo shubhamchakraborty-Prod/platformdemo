@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Future Skills Labs and Swift AI Academy</title>
-<meta name="description" content="Future Skills Labs for schools and Swift AI Academy for higher education: hands-on labs, course samples and upcoming learning pathways.">
+<meta name="description" content="Future Skills Labs for schools, Swift AI Academy for higher education, and upcoming courses from OEMs and learning providers.">
 <link rel="icon" type="image/png" href="images/logo-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -73,6 +73,8 @@ a.card:hover{ box-shadow:0 8px 24px rgba(20,26,51,.12); transform:translateY(-2p
 a.card:hover .playbtn, a.card:focus-visible .playbtn{ opacity:1; }
 .body{ display:flex; flex-direction:column; gap:4px; flex:1; padding:14px 16px 16px; }
 .prov{ display:flex; align-items:center; justify-content:space-between; gap:8px; font-size:12px; font-weight:600; color:var(--ink-3); }
+.lvl-lg{ font-size:13px; padding:3px 10px; border-radius:8px; }
+.grp{ display:flex; align-items:center; gap:8px; margin-top:24px; font-size:16px; line-height:22px; font-weight:700; color:var(--ink); }
 .lvl{ flex:0 0 auto; padding:2px 8px; border:1px solid var(--blue-line); border-radius:6px; background:var(--blue-soft); color:var(--blue-ink); font-size:11.5px; font-weight:600; white-space:nowrap; }
 .body h3{ font-size:16px; line-height:22px; font-weight:700; color:var(--ink); }
 .one{ font-size:13px; line-height:19px; color:var(--ink-3); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
@@ -94,6 +96,7 @@ a.card:hover .pill.act{ background:var(--blue-d); }
 .lv-txt{ flex:1; min-width:0; }
 .lv-txt{ display:flex; flex-direction:column; align-items:flex-start; gap:6px; }
 .lv-txt h3{ font-size:15px; line-height:21px; font-weight:700; }
+.lv-txt p{ font-size:12.5px; line-height:17px; color:var(--ink-4); margin-top:-4px; }
 .lv-txt p{ font-size:12.5px; color:var(--ink-4); }
 
 /* providers */
@@ -103,6 +106,7 @@ a.card:hover .pill.act{ background:var(--blue-d); }
 .pv{ display:flex; flex-direction:column; align-items:flex-start; justify-content:space-between; gap:14px; min-height:112px; padding:18px; background:var(--surface); border:1px solid var(--line); border-radius:14px; }
 .pv h3{ font-size:20px; line-height:26px; font-weight:700; color:var(--ink); }
 .pv-more{ margin-top:14px; font-size:13px; color:var(--ink-4); }
+.domains li{ font-size:14px; padding:8px 16px; }
 
 .empty{ margin-top:32px; color:var(--ink-3); }
 .site-foot{ margin-top:56px; padding-top:20px; border-top:1px solid var(--line); font-size:12.5px; color:var(--ink-4); }
@@ -156,9 +160,10 @@ body.playing{ overflow:hidden; }
   .top{ padding:0 12px; gap:8px; }
   .brand img{ width:30px; height:18px; }
   .tabs{ flex:1; gap:0; }
-  .tabs a{ flex:1; align-items:center; padding:0 6px; text-align:center; }
-  .tabs a b{ font-size:13.5px; }
-  .tabs a small{ font-size:10.5px; }
+  .brand{ display:none; }
+  .tabs a{ flex:1; align-items:center; padding:0 4px; text-align:center; }
+  .tabs a b{ font-size:12.5px; line-height:16px; white-space:normal; }
+  .tabs a small{ font-size:10px; line-height:13px; }
   .wrap{ padding:24px 16px 48px; }
   .hero h1{ font-size:26px; line-height:34px; }
   .search{ flex:1 1 100%; }
@@ -187,7 +192,8 @@ body.playing{ overflow:hidden; }
     <a class="brand" href="#/labs" aria-label="Home"><img src="images/logo-icon.png" alt="" width="36" height="21"></a>
     <nav class="tabs" aria-label="Programmes">
       <a href="#/labs" id="tab-labs"><b>Future Skills Labs</b><small>For schools</small></a>
-      <a href="#/academy" id="tab-academy"><b>Swift AI Academy</b><small>For higher education</small></a>
+      <a href="#/academy" id="tab-academy"><b>Swift AI Academy</b><small>Higher education</small></a>
+      <a href="#/oem" id="tab-oem"><b>OEMs and Domains</b><small>Coming soon</small></a>
     </nav>
   </header>
   <main class="wrap" id="main"></main>
@@ -213,20 +219,18 @@ body.playing{ overflow:hidden; }
 <script>
 /* =====================================================================
    DATA
-   - url: course plays inside this page (same tab)
-   - samples: course opens a samples view (external samples open in a new tab)
-   - neither: "Coming soon"
+   Tabs: #/labs (schools), #/academy (higher education), #/oem (providers)
+   Courses with url play inside this page (same tab).
    Thumbnails: images/courses/<id>.webp
    ===================================================================== */
 const PROGRAMMES = {
-  labs:    {title:'Future Skills Labs', audience:'For schools', back:'All labs', brand:'Future Skills Labs', foot:'&copy; 2026 ConveGenius.AI.'},
-  academy: {title:'Swift AI Academy',   audience:'For higher education', back:'All courses', brand:'Swift AI Academy', foot:'&copy; 2026 Swift AI Academy, ConveGenius.AI.'}
+  labs:    {title:'Future Skills Labs', back:'All labs',    brand:'Future Skills Labs', foot:'&copy; 2026 ConveGenius.AI.'},
+  academy: {title:'Swift AI Academy',   back:'All courses', brand:'Swift AI Academy',   foot:'&copy; 2026 Swift AI Academy, ConveGenius.AI.'},
+  oem:     {title:'OEMs and Domains',   foot:'&copy; 2026 Swift AI Academy, ConveGenius.AI.'}
 };
 const SECTIONS = [
-  {id:'fsl',  prog:'labs',    title:'Future Skills Lab',    sub:'Hands-on labs you play right here.', unit:'Lab', c1:'#0F766E', c2:'#14B8A6', level:'School level'},
-  {id:'aai',  prog:'academy', title:'Applied AI',           sub:'Use AI on real tasks, and check it before you trust it.', unit:'Course', c1:'#4C1D95', c2:'#7C3AED', level:'NSQF Level 4'},
-  {id:'comm', prog:'academy', title:'Communication Skills', sub:'Workplace communication, from the shop floor to the boardroom.', c1:'#0E7490', c2:'#22B8CF'},
-  {id:'vibe', prog:'academy', title:'Vibe Coding',          sub:'Build working tools by describing what you want.', c1:'#0E1B5C', c2:'#386AF6'}
+  {id:'fsl', prog:'labs',    title:'Future Skills Lab', unit:'Lab', c1:'#0F766E', c2:'#14B8A6', level:'School level'},
+  {id:'aai', prog:'academy', title:'Applied AI',        c1:'#4C1D95', c2:'#7C3AED', level:'NSQF Level 4'}
 ];
 const COURSES = [
   {id:'pitch-building',         sec:'fsl', title:'Pitch Building',          url:'https://pitch-building-v1.netlify.app/'},
@@ -237,63 +241,52 @@ const COURSES = [
   {id:'create-my-plate',        sec:'fsl', title:'Create My Plate',         url:'https://create-my-plate.netlify.app/'},
   {id:'truthlens',              sec:'fsl', title:'TruthLens',               url:'https://truthlens-v1.netlify.app/'},
 
-  {id:'applied-ai-1-use-it-and-check-it',       sec:'aai', title:'Applied AI 1: Use It, and Check It', url:'https://aai-tau.vercel.app/course.html#S01', hours:16, one:'Use an AI app on real tasks and check every answer before you use it.'},
-  {id:'applied-ai-2-apply-it-where-it-matters', sec:'aai', title:'Applied AI 2: Apply It Where It Matters', hours:16, one:'Use AI for your trade, studies or daily life, then try new tasks on your own.'},
-  {id:'applied-ai-3-trust-safety-and-harm',     sec:'aai', title:'Applied AI 3: Trust, Safety and Harm', hours:16, one:'Spot wrong AI answers, fake messages and scams, and protect your data.'},
-  {id:'applied-ai-4-make-it-stick',             sec:'aai', title:'Applied AI 4: Make It Stick', hours:16, one:'Build and test your own AI method for a task you do every week.'},
-
-  {id:'basic-foundational-workplace-communication',            sec:'comm', level:'Level 1', samples:'communication-level-1', title:'Basic and Foundational Workplace Communication', hours:58, one:'Greet people, follow instructions, read notices and fill forms at work.'},
-  {id:'trade-team-communication',                              sec:'comm', level:'Level 2', title:'Trade and Team Communication', hours:44, one:'Talk about trade work, safety, customers and job cards with confidence.'},
-  {id:'supervisory-communication-skills',                      sec:'comm', level:'Level 3', title:'Supervisory Communication Skills', hours:57, one:'Give clear instructions to a team, report upward and write handover notes.'},
-  {id:'junior-management-communication-skills',                sec:'comm', level:'Level 4', title:'Junior Management Communication Skills', hours:57, one:'Delegate work, train a team and write reports for management.'},
-  {id:'interpersonal-communication-for-managers',              sec:'comm', level:'Level 5', title:'Interpersonal Communication for Managers', hours:64, one:'Difficult conversations, negotiation and mentoring for managers.'},
-  {id:'cross-cultural-executive-presence-communication',       sec:'comm', level:'Level 6', title:'Cross-Cultural and Executive Presence Communication', hours:46, one:'Executive presence and cross-cultural meetings.'},
-  {id:'strategic-negotiation-crisis-leadership-communication', sec:'comm', level:'Level 7', title:'Strategic Negotiation and Crisis Leadership Communication', hours:38, one:'Negotiation and crisis communication for directors.'},
-  {id:'research-governance-thought-leadership-communication',  sec:'comm', level:'Level 8', title:'Research, Governance and Thought-Leadership Communication', hours:60, one:'Academic and governance communication.'},
-
-  {id:'swiftchat-bot-builder', sec:'vibe', title:'SwiftChat Bot Builder', hours:15, one:'Design and build a simple chatbot on SwiftChat that answers real questions.'}
+  {id:'applied-ai-1-use-it-and-check-it', sec:'aai', title:'Applied AI 1: Use It, and Check It', url:'https://aai-tau.vercel.app/course.html#S01', hours:16, one:'Use an AI app on real tasks and check every answer before you use it.'}
 ];
 COURSES.forEach(c=>{ c.img = c.img || 'images/courses/'+c.id+'.webp'; c.level = c.level || (SECTIONS.find(s=>s.id===c.sec).level || ''); });
 
-/* upcoming level offerings: separate from the existing course titles above */
-const UPCOMING_LEVELS = [
-  {sec:'aai',  title:'Applied AI - Level 1'},
-  {sec:'aai',  title:'Applied AI - Level 2'},
-  {sec:'aai',  title:'Applied AI - Level 3'},
-  {sec:'vibe', title:'Vibe Coding - Level 5 onwards'}
+/* Communication Skills, NSQF Level 1: Module 1 samples (source: tracker column G, verbatim) */
+const COMM_L1 = {
+  title:'Communication Skills', level:'NSQF Level 1', course:'Basic and Foundational Workplace Communication', module:'Module 1 samples',
+  note:'Preview samples. Content is under review.',
+  groups:[['Reading Card','Reading cards'], ['Quiz','Quizzes'], ['Voice Input','Voice practice'], ['Graded Voice Capture','Graded voice capture'], ['Game','Games'], ['Open Problem','Open problems']],
+  items:[
+    {type:'Reading Card', label:'Reading Card 1', url:'https://readingmaterial1.vercel.app/', kind:'web'},
+    {type:'Reading Card', label:'Reading Card 2', url:'https://module1readingcard.vercel.app/', kind:'web'},
+    {type:'Quiz', label:'Quiz 1', url:'https://quiz1-sigma-six.vercel.app/', kind:'web'},
+    {type:'Quiz', label:'Quiz 2', url:'https://quiz-2-kohl.vercel.app/', kind:'web'},
+    {type:'Quiz', label:'Quiz 3', url:'https://quiz-3-alpha.vercel.app/', kind:'web'},
+    {type:'Voice Input', label:'Voice Input asset folder', url:'https://drive.google.com/drive/folders/1sCoR5Y4OIsficwd9qNLA7-nEzTU-jXag', kind:'folder'},
+    {type:'Graded Voice Capture', label:'Graded Voice Capture asset folder', url:'https://drive.google.com/drive/folders/1Oe6NpkYRydNW5ygsMlTfEeg0wNqs6Z1u', kind:'folder'},
+    {type:'Game', label:'Game asset folder', url:'https://drive.google.com/drive/folders/1KQME7dm1mOLhSyh1_j749KhUoSWSJM54', kind:'folder'},
+    {type:'Open Problem', label:'Open Problem 1', url:'https://open-problem-1.vercel.app/', kind:'web'},
+    {type:'Open Problem', label:'Open Problem 2', url:'https://open-problem-2.vercel.app/', kind:'web'},
+    {type:'Open Problem', label:'Open Problem 3', url:'https://open-problem-3.vercel.app/', kind:'web'},
+    {type:'Open Problem', label:'Open Problem 4', url:'https://open-problem-4.vercel.app/', kind:'web'},
+    {type:'Open Problem', label:'Open Problem 5', url:'https://open-problem-5.vercel.app/', kind:'web'},
+    {type:'Open Problem', label:'Open Problem 6', url:'https://open-problem-6.vercel.app/', kind:'web'},
+    {type:'Open Problem', label:'Open Problem 7', url:'https://open-problem-7.vercel.app/', kind:'web'},
+    {type:'Open Problem', label:'Open Problem 8', url:'https://open-problem-8.vercel.app/', kind:'web'}
+  ]
+};
+
+/* upcoming level offerings */
+const UPCOMING = [
+  {sec:'aai',  title:'Applied AI', c1:'#4C1D95', c2:'#7C3AED', levels:[
+    {level:'Level 1'}, {level:'Level 2'}, {level:'Level 3'}, {level:'Level 4'}]},
+  {sec:'comm', title:'Communication Skills', c1:'#0E7490', c2:'#22B8CF', levels:[
+    {level:'Level 2', name:'Trade and Team Communication'},
+    {level:'Level 3', name:'Supervisory Communication Skills'},
+    {level:'Level 4', name:'Junior Management Communication Skills'},
+    {level:'Level 5', name:'Interpersonal Communication for Managers'},
+    {level:'Level 6', name:'Cross-Cultural and Executive Presence Communication'},
+    {level:'Level 7', name:'Strategic Negotiation and Crisis Leadership Communication'},
+    {level:'Level 8', name:'Research, Governance and Thought-Leadership Communication'}]}
 ];
 
 /* roadmap entries only: no course titles, links, dates or partnership claims */
 const PROVIDERS = ['Google', 'Snowflake', 'Intel', 'AWS', 'Britannica'];
 const DOMAINS = ['AI/ML', 'Data Science', 'Cybersecurity', 'Cloud Computing', 'Data Engineering', 'Digital Literacy'];
-
-/* Communication Skills Level 1, Module 1 samples (source: communication-samples.json, column G) */
-const SAMPLE_SETS = {
-  'communication-level-1': {
-    course:'basic-foundational-workplace-communication',
-    title:'Communication Skills - Level 1', module:'Module 1 samples',
-    note:'Preview samples. Content is under review.',
-    groups:[['Reading Card','Reading cards'], ['Quiz','Quizzes'], ['Voice Input','Voice practice'], ['Graded Voice Capture','Graded voice capture'], ['Game','Games'], ['Open Problem','Open problems']],
-    items:[
-      {type:'Reading Card', label:'Reading Card 1', url:'https://readingmaterial1.vercel.app/', kind:'web'},
-      {type:'Reading Card', label:'Reading Card 2', url:'https://module1readingcard.vercel.app/', kind:'web'},
-      {type:'Quiz', label:'Quiz 1', url:'https://quiz1-sigma-six.vercel.app/', kind:'web'},
-      {type:'Quiz', label:'Quiz 2', url:'https://quiz-2-kohl.vercel.app/', kind:'web'},
-      {type:'Quiz', label:'Quiz 3', url:'https://quiz-3-alpha.vercel.app/', kind:'web'},
-      {type:'Voice Input', label:'Voice Input asset folder', url:'https://drive.google.com/drive/folders/1sCoR5Y4OIsficwd9qNLA7-nEzTU-jXag', kind:'folder'},
-      {type:'Graded Voice Capture', label:'Graded Voice Capture asset folder', url:'https://drive.google.com/drive/folders/1Oe6NpkYRydNW5ygsMlTfEeg0wNqs6Z1u', kind:'folder'},
-      {type:'Game', label:'Game asset folder', url:'https://drive.google.com/drive/folders/1KQME7dm1mOLhSyh1_j749KhUoSWSJM54', kind:'folder'},
-      {type:'Open Problem', label:'Open Problem 1', url:'https://open-problem-1.vercel.app/', kind:'web'},
-      {type:'Open Problem', label:'Open Problem 2', url:'https://open-problem-2.vercel.app/', kind:'web'},
-      {type:'Open Problem', label:'Open Problem 3', url:'https://open-problem-3.vercel.app/', kind:'web'},
-      {type:'Open Problem', label:'Open Problem 4', url:'https://open-problem-4.vercel.app/', kind:'web'},
-      {type:'Open Problem', label:'Open Problem 5', url:'https://open-problem-5.vercel.app/', kind:'web'},
-      {type:'Open Problem', label:'Open Problem 6', url:'https://open-problem-6.vercel.app/', kind:'web'},
-      {type:'Open Problem', label:'Open Problem 7', url:'https://open-problem-7.vercel.app/', kind:'web'},
-      {type:'Open Problem', label:'Open Problem 8', url:'https://open-problem-8.vercel.app/', kind:'web'}
-    ]
-  }
-};
 
 /* =====================================================================
    HELPERS
@@ -312,7 +305,6 @@ function toast(msg){ const t = document.createElement('div'); t.className = 'toa
 
 const ICON = {
   play:'<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>',
-  back:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>',
   ext:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>',
   info:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>',
   'Reading Card':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h12v18H6a2 2 0 0 1-2-2z"/><path d="M8 8h6M8 12h6"/></svg>',
@@ -322,7 +314,7 @@ const ICON = {
 };
 const ART = {
   aai:'<svg viewBox="0 0 64 64" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M32 8l4.5 13.5L50 26l-13.5 4.5L32 44l-4.5-13.5L14 26l13.5-4.5z"/><path d="M48 40l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/></svg>',
-  vibe:'<svg viewBox="0 0 64 64" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 18L8 32l14 14M42 18l14 14-14 14M36 12l-8 40"/></svg>'
+  comm:'<svg viewBox="0 0 64 64" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 14h30a4 4 0 0 1 4 4v14a4 4 0 0 1-4 4H22l-8 7v-7h-6a4 4 0 0 1-4-4V18a4 4 0 0 1 4-4z"/><path d="M46 24h10a4 4 0 0 1 4 4v12a4 4 0 0 1-4 4h-4v6l-7-6h-9a4 4 0 0 1-4-4v-2"/></svg>'
 };
 
 /* =====================================================================
@@ -330,41 +322,30 @@ const ART = {
    ===================================================================== */
 function card(c, i, n){
   const s = secOf(c.sec), p = progress[c.id] || {};
-  let pill, href = '';
-  if(c.url){
-    href = '#/play/'+c.id;
-    pill = p.done ? '<span class="pill done">&#10003; Completed</span>' : p.opened ? '<span class="pill go">In progress</span>' : '<span class="pill new">Play now</span>';
-  } else if(c.samples){
-    href = '#/samples/'+c.samples;
-    pill = '<span class="pill act">View samples</span>';
-  } else pill = '<span class="pill soon">Coming soon</span>';
-  const meta = [s.unit ? s.unit+' '+(i+1)+' of '+n : '', c.hours ? c.hours+' hours' : (c.url ? 'Interactive' : '')].filter(Boolean).join(' &middot; ');
-  const key = (c.title+' '+(c.one||'')+' '+s.title+' '+c.level).toLowerCase();
-  const inner = `<div class="thumb" style="--c1:${s.c1};--c2:${s.c2};">
-      <img src="${esc(c.img)}" alt="" width="800" height="500" loading="${s.prog==='labs'?'eager':'lazy'}" decoding="async">
-      ${c.url ? `<span class="playbtn" aria-hidden="true">${ICON.play}</span>` : ''}
+  const pill = p.done ? '<span class="pill done">&#10003; Completed</span>' : p.opened ? '<span class="pill go">In progress</span>' : '<span class="pill new">Play now</span>';
+  const meta = [s.unit ? s.unit+' '+(i+1)+' of '+n : '', c.hours ? c.hours+' hours' : 'Interactive'].filter(Boolean).join(' &middot; ');
+  return `<a class="card" href="#/play/${c.id}">
+    <div class="thumb" style="--c1:${s.c1};--c2:${s.c2};">
+      <img src="${esc(c.img)}" alt="" width="800" height="500" loading="eager" decoding="async">
+      <span class="playbtn" aria-hidden="true">${ICON.play}</span>
       <span class="tag">${esc(s.title)}</span>
     </div>
     <div class="body">
-      <div class="prov"><span>${PROGRAMMES[s.prog].brand}</span>${c.level ? `<span class="lvl">${esc(c.level)}</span>` : ''}</div>
+      <div class="prov"><span>${PROGRAMMES[s.prog].brand}</span><span class="lvl">${esc(c.level)}</span></div>
       <h3>${esc(c.title)}</h3>
       ${c.one ? `<p class="one">${esc(c.one)}</p>` : ''}
-      ${meta ? `<div class="meta">${meta}</div>` : ''}
+      <div class="meta">${meta}</div>
       <div class="foot">${pill}</div>
-    </div>`;
-  return href ? `<a class="card" href="${href}" data-k="${esc(key)}">${inner}</a>` : `<div class="card" data-k="${esc(key)}">${inner}</div>`;
+    </div>
+  </a>`;
 }
-function levelCard(l){
-  const s = secOf(l.sec);
-  return `<div class="lv" data-k="${esc((l.title+' '+s.title).toLowerCase())}"><span class="lv-art" style="--c1:${s.c1};--c2:${s.c2};" aria-hidden="true">${ART[l.sec]||''}</span><div class="lv-txt"><h3>${esc(l.title)}</h3><span class="pill soon">Coming soon</span></div></div>`;
+function sample(x){
+  return x.kind==='folder'
+    ? `<a class="sm folder" href="${esc(x.url)}" target="_blank" rel="noopener noreferrer"><div class="sm-top"><span class="sm-ic" aria-hidden="true">${ICON.folder}</span><div><h3>${esc(x.label)}</h3><small>Google Drive asset collection. May require access.</small></div></div><span class="sm-cta">Open asset folder ${ICON.ext}<span class="sr-only"> (opens in a new tab)</span></span></a>`
+    : `<a class="sm" href="${esc(x.url)}" target="_blank" rel="noopener noreferrer"><div class="sm-top"><span class="sm-ic" aria-hidden="true">${ICON[x.type]||ICON.info}</span><div><h3>${esc(x.label)}</h3><small>Web sample. Opens in a new tab.</small></div></div><span class="sm-cta">Open sample ${ICON.ext}<span class="sr-only"> (opens in a new tab)</span></span></a>`;
 }
-function section(s){
-  const all = inSec(s.id), lv = UPCOMING_LEVELS.filter(l=>l.sec===s.id);
-  return `<section class="sec" id="sec-${s.id}" aria-labelledby="h-${s.id}">
-    <div class="sec-head"><h2 id="h-${s.id}">${esc(s.title)} <span class="count" aria-label="${all.length} courses">${all.length}</span></h2><p>${esc(s.sub)}</p></div>
-    <div class="grid">${all.map((c,i)=>card(c, i, all.length)).join('')}</div>
-    ${lv.length ? `<h3 class="sub-h">Upcoming levels</h3><div class="lv-grid">${lv.map(levelCard).join('')}</div>` : ''}
-  </section>`;
+function levelTile(g, l){
+  return `<div class="lv"><span class="lv-art" style="--c1:${g.c1};--c2:${g.c2};" aria-hidden="true">${ART[g.sec]}</span><div class="lv-txt"><h3>${esc(g.title)} - ${esc(l.level)}</h3>${l.name ? `<p>${esc(l.name)}</p>` : ''}<span class="pill soon">Coming soon</span></div></div>`;
 }
 
 function renderLabs(){
@@ -374,72 +355,64 @@ function renderLabs(){
       <div class="eyebrow">For schools</div>
       <h1>Future Skills Labs</h1>
       <p>Hands-on labs for school students. Each lab opens and plays right here on this page.</p>
-      <div class="stats"><span class="stat"><b>${labs.length}</b> labs</span><span class="stat"><b>School level</b></span><span class="stat"><b>${done}</b> of ${labs.length} completed</span></div>
+      <div class="stats"><span class="stat"><b>School level</b></span><span class="stat"><b>${labs.length}</b> labs</span><span class="stat"><b>${done}</b> of ${labs.length} completed</span></div>
     </section>
-    <section class="sec" id="sec-fsl" aria-labelledby="h-fsl"><h2 id="h-fsl" class="sr-only">Future Skills Lab</h2>
+    <section class="sec" aria-labelledby="h-fsl"><h2 id="h-fsl" class="sr-only">Future Skills Lab labs</h2>
       <div class="grid">${labs.map((c,i)=>card(c, i, labs.length)).join('')}</div>
     </section>
     <footer class="site-foot">${PROGRAMMES.labs.foot}</footer>`;
 }
 
 function renderAcademy(){
-  const secs = SECTIONS.filter(s=>s.prog==='academy');
-  const courses = COURSES.filter(c=>progOf(c)==='academy');
-  const playable = courses.filter(c=>c.url).length, withSamples = courses.filter(c=>c.samples).length, soon = courses.filter(c=>!c.url && !c.samples).length;
-  document.title = 'Swift AI Academy Courses';
+  document.title = 'Swift AI Academy | Higher education';
+  const aai = inSec('aai'), m = COMM_L1;
+  const web = m.items.filter(x=>x.kind==='web').length, folders = m.items.length - web;
+  const groups = m.groups.map(([type, heading])=>{
+    const items = m.items.filter(x=>x.type===type); if(!items.length) return '';
+    return `<h4 class="grp">${esc(heading)} <span class="count">${items.length}</span></h4><div class="sm-grid">${items.map(sample).join('')}</div>`;
+  }).join('');
   return `<section class="hero">
       <div class="eyebrow">For higher education</div>
       <h1>Swift AI Academy</h1>
       <p>Explore hands-on courses, course samples and upcoming learning pathways.</p>
-      <div class="stats"><span class="stat"><b>${courses.length}</b> courses</span><span class="stat"><b>${playable}</b> playable now</span><span class="stat"><b>${withSamples}</b> with samples</span><span class="stat"><b>${soon}</b> coming soon</span></div>
+      <div class="jump" style="margin-top:18px;">${[['aai','Applied AI'],['comm','Communication Skills'],['upcoming','Upcoming']].map(([id,t])=>`<button class="chip-btn" onclick="jump('${id}')">${t}</button>`).join('')}</div>
     </section>
-    <div class="tools">
-      <input class="search" id="search" type="search" placeholder="Search courses" aria-label="Search courses" oninput="filter()">
-      <div class="jump">${[...secs, {id:'providers', title:'Providers'}].map(s=>`<button class="chip-btn" onclick="jump('${s.id}')">${esc(s.title)}</button>`).join('')}</div>
-    </div>
-    ${secs.map(section).join('')}
-    <p class="empty" id="empty" hidden>No courses match your search.</p>
-    <section class="sec" id="sec-providers" aria-labelledby="h-providers">
-      <div class="sec-head"><h2 id="h-providers">Upcoming courses from OEMs and learning providers</h2><p>Explore upcoming learning opportunities across AI/ML, Data Science, Cybersecurity and more.</p></div>
-      <ul class="domains" aria-label="Domains">${DOMAINS.map(d=>`<li>${esc(d)}</li>`).join('')}</ul>
+
+    <section class="sec" id="sec-aai" aria-labelledby="h-aai">
+      <div class="sec-head"><h2 id="h-aai">Applied AI <span class="lvl lvl-lg">NSQF Level 4</span></h2><p>Use AI on real tasks, and check it before you trust it.</p></div>
+      <div class="grid">${aai.map((c,i)=>card(c, i, aai.length)).join('')}</div>
+    </section>
+
+    <section class="sec" id="sec-comm" aria-labelledby="h-comm">
+      <div class="sec-head"><h2 id="h-comm">Communication Skills <span class="lvl lvl-lg">${esc(m.level)}</span></h2><p>${esc(m.course)} &middot; ${esc(m.module)}: ${web} web samples and ${folders} asset folders.</p></div>
+      <div class="note" role="note">${ICON.info}<span>${esc(m.note)}</span></div>
+      ${groups}
+    </section>
+
+    <section class="sec" id="sec-upcoming" aria-labelledby="h-upcoming">
+      <div class="sec-head"><h2 id="h-upcoming">Upcoming</h2><p>More levels on the way.</p></div>
+      ${UPCOMING.map(g=>`<h4 class="grp">${esc(g.title)} <span class="count">${g.levels.length} levels</span></h4><div class="lv-grid">${g.levels.map(l=>levelTile(g, l)).join('')}</div>`).join('')}
+    </section>
+    <footer class="site-foot">${PROGRAMMES.academy.foot}</footer>`;
+}
+
+function renderOem(){
+  document.title = 'OEMs and Domains | Swift AI Academy';
+  return `<section class="hero">
+      <div class="eyebrow">Coming soon</div>
+      <h1>Upcoming courses from OEMs and learning providers</h1>
+      <p>Explore upcoming learning opportunities across AI/ML, Data Science, Cybersecurity and more.</p>
+    </section>
+    <section class="sec" aria-labelledby="h-providers">
+      <div class="sec-head"><h2 id="h-providers">Providers <span class="count">${PROVIDERS.length}</span></h2></div>
       <div class="pv-grid">${PROVIDERS.map(p=>`<div class="pv"><h3>${esc(p)}</h3><span class="pill soon">Coming soon</span></div>`).join('')}</div>
       <p class="pv-more">More providers coming soon.</p>
     </section>
-    <footer class="site-foot">&copy; 2026 Swift AI Academy, ConveGenius.AI.</footer>`;
-}
-
-function renderSamples(id){
-  const set = SAMPLE_SETS[id], course = byId(set.course);
-  document.title = set.title+' | Swift AI Academy';
-  const groups = set.groups.map(([type, heading])=>{
-    const items = set.items.filter(x=>x.type===type); if(!items.length) return '';
-    return `<section class="sec" aria-labelledby="g-${type.replace(/\W/g,'')}">
-      <div class="sec-head"><h2 id="g-${type.replace(/\W/g,'')}">${esc(heading)} <span class="count">${items.length}</span></h2></div>
-      <div class="sm-grid">${items.map(x=>x.kind==='folder'
-        ? `<a class="sm folder" href="${esc(x.url)}" target="_blank" rel="noopener noreferrer"><div class="sm-top"><span class="sm-ic" aria-hidden="true">${ICON.folder}</span><div><h3>${esc(x.label)}</h3><small>Google Drive asset collection. May require access.</small></div></div><span class="sm-cta">Open asset folder ${ICON.ext}<span class="sr-only"> (opens in a new tab)</span></span></a>`
-        : `<a class="sm" href="${esc(x.url)}" target="_blank" rel="noopener noreferrer"><div class="sm-top"><span class="sm-ic" aria-hidden="true">${ICON[x.type]||ICON.info}</span><div><h3>${esc(x.label)}</h3><small>Web sample. Opens in a new tab.</small></div></div><span class="sm-cta">Open sample ${ICON.ext}<span class="sr-only"> (opens in a new tab)</span></span></a>`).join('')}</div>
-    </section>`;
-  }).join('');
-  return `<a class="back" href="#/academy">${ICON.back}<span>All courses</span></a>
-    <section class="hero" style="margin-top:20px;">
-      <div class="eyebrow">${esc(course.title)}</div>
-      <h1>${esc(set.title)}</h1>
-      <p>${esc(set.module)}</p>
-      <div class="note" role="note">${ICON.info}<span>${esc(set.note)}</span></div>
+    <section class="sec" aria-labelledby="h-domains">
+      <div class="sec-head"><h2 id="h-domains">Domains <span class="count">${DOMAINS.length}</span></h2></div>
+      <ul class="domains">${DOMAINS.map(d=>`<li>${esc(d)}</li>`).join('')}</ul>
     </section>
-    ${groups}
-    <footer class="site-foot">&copy; 2026 Swift AI Academy, ConveGenius.AI.</footer>`;
-}
-
-function filter(){
-  const q = ($('search')||{value:''}).value.trim().toLowerCase(); let any = false;
-  document.querySelectorAll('#main .sec[id^="sec-"]:not(#sec-providers)').forEach(sec=>{
-    let n = 0;
-    sec.querySelectorAll('.card, .lv').forEach(el=>{ const ok = !q || el.dataset.k.includes(q); el.hidden = !ok; if(ok) n++; });
-    const sh = sec.querySelector('.sub-h'); if(sh) sh.hidden = ![...sec.querySelectorAll('.lv')].some(x=>!x.hidden);
-    sec.hidden = !n; if(n) any = true;
-  });
-  const e = $('empty'); if(e) e.hidden = any;
+    <footer class="site-foot">${PROGRAMMES.oem.foot}</footer>`;
 }
 function jump(id){ const el = $('sec-'+id); if(el) el.scrollIntoView({behavior:'smooth', block:'start'}); }
 
@@ -457,8 +430,8 @@ function openPlayer(c){
   if(!current || current.id!==c.id){ $('loading').hidden = false; $('frame').src = c.url; }
   current = c;
   progress[c.id] = Object.assign({}, progress[c.id], {opened:Date.now()}); saveProgress();
-  const playable = list.filter(x=>x.url), j = playable.indexOf(c);
-  $('prev').disabled = j<=0; $('next').disabled = j<0 || j>=playable.length-1;
+  const j = list.indexOf(c);
+  $('prev').disabled = j<=0; $('next').disabled = j>=list.length-1;
   doneButton();
   $('page').hidden = true; $('player').hidden = false; document.body.classList.add('playing');
 }
@@ -471,36 +444,28 @@ function closePlayer(){
 function leavePlayer(){ location.hash = '#/'+(current ? progOf(current) : lastProg); }
 function doneButton(){ const d = !!(progress[current.id]||{}).done, b = $('done'); b.classList.toggle('on', d); b.innerHTML = d ? '&#10003; Completed' : 'Mark as complete'; }
 function toggleDone(){ const p = progress[current.id] = progress[current.id] || {}; p.done = !p.done; saveProgress(); doneButton(); toast(p.done ? current.title+' completed' : 'Marked as not complete'); }
-function step(d){ const list = inSec(current.sec).filter(x=>x.url), n = list[list.indexOf(current)+d]; if(n) location.hash = '#/play/'+n.id; }
+function step(d){ const list = inSec(current.sec), n = list[list.indexOf(current)+d]; if(n) location.hash = '#/play/'+n.id; }
 function fullScreen(){ const s = $('stage'); (s.requestFullscreen || s.webkitRequestFullscreen || function(){}).call(s); }
 $('frame').addEventListener('load', ()=>{ if($('frame').src !== 'about:blank') $('loading').hidden = true; });
 
 /* =====================================================================
-   ROUTING: #/labs, #/academy, #/play/<course>, #/samples/<set>
+   ROUTING
    ===================================================================== */
+const VIEWS = {labs:renderLabs, academy:renderAcademy, oem:renderOem};
 let lastView = '';
 function route(){
-  const h = location.hash;
-  const play = h.match(/^#\/play\/([\w-]+)$/), samp = h.match(/^#\/samples\/([\w-]+)$/);
-  const c = play && byId(play[1]);
-  if(c && c.url){ if(!current && lastView) scrollMem[lastView] = window.scrollY; lastProg = progOf(c); setTabs(lastProg); openPlayer(c); return; }
+  const h = location.hash, play = h.match(/^#\/play\/([\w-]+)$/), c = play && byId(play[1]);
+  if(c){ if(!current && lastView) scrollMem[lastView] = window.scrollY; lastProg = progOf(c); setTabs(lastProg); openPlayer(c); return; }
   const fromPlayer = closePlayer();
-  let view, html, prog;
-  if(samp && SAMPLE_SETS[samp[1]]){ view = 'samples/'+samp[1]; prog = 'academy'; html = renderSamples(samp[1]); }
-  else if(h==='#/academy'){ view = prog = 'academy'; html = renderAcademy(); }
-  else if(play && c && progOf(c)==='academy'){ history.replaceState(null, '', '#/academy'); view = prog = 'academy'; html = renderAcademy(); }
-  else {
-    if(h !== '#/labs') history.replaceState(null, '', '#/labs');
-    view = prog = 'labs'; html = renderLabs();
-  }
+  let view = (h.match(/^#\/(labs|academy|oem)$/)||[])[1];
+  if(!view){ view = 'labs'; history.replaceState(null, '', '#/labs'); }
   if(lastView && !fromPlayer) scrollMem[lastView] = window.scrollY;
-  lastProg = prog; setTabs(prog);
-  $('main').innerHTML = html; filter();
-  const restore = fromPlayer || view===lastView || (lastView.startsWith('samples/') && view==='academy');
-  window.scrollTo(0, restore ? (scrollMem[view]||0) : 0);
+  lastProg = view; setTabs(view);
+  $('main').innerHTML = VIEWS[view]();
+  window.scrollTo(0, (fromPlayer || view===lastView) ? (scrollMem[view]||0) : 0);
   lastView = view;
 }
-function setTabs(prog){ ['labs','academy'].forEach(p=>{ const a = $('tab-'+p); if(p===prog) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current'); }); }
+function setTabs(prog){ ['labs','academy','oem'].forEach(p=>{ const a = $('tab-'+p); if(p===prog) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current'); }); }
 window.addEventListener('hashchange', route);
 route();
 </script>
