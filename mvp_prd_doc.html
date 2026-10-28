@@ -11420,4 +11420,296 @@ body.v2 .pw-hero .small, body.v2 .pw-hero .muted, body.v2 .pw-hero .faint, body.
 .au-sel{ width:100%; height:clamp(42px,5.8vh,48px); padding:0 14px; border:1px solid #CFD6E6; border-radius:8px; font:inherit; font-size:14.5px; color:#141A33; background:#fff; cursor:pointer; }
 .au-sel:focus{ outline:none; border-color:#2548E8; box-shadow:0 0 0 3px rgba(37,72,232,.14); }
 </style>
-</body></html>
+</body></html><script>
+/* =====================================================================
+   Courses (28 Oct 2026): in-house catalogue in four sections.
+   Courses with a url play inside the platform (same tab, embedded player).
+   Courses without a url show a cover and "Coming soon".
+   Set img:'path/to/photo.jpg' on any course to use a photo as its thumbnail.
+   ===================================================================== */
+const CX_SECTIONS = [
+  {id:'fsl',  title:'Future Skills Lab', sub:'Hands-on labs you play right here.', c1:'#0F766E', c2:'#14B8A6', unit:'Lab'},
+  {id:'aai',  title:'Applied AI',        sub:'Use AI on real tasks, and check it before you trust it.', c1:'#4C1D95', c2:'#7C3AED', unit:'Course'},
+  {id:'comm', title:'Communication',     sub:'Workplace communication, from the shop floor to the boardroom.', c1:'#0E7490', c2:'#22B8CF', unit:'Level'},
+  {id:'vibe', title:'Vibe Coding',       sub:'Build working tools by describing what you want.', c1:'#0E1B5C', c2:'#386AF6', unit:'Course'}
+];
+const CX_COURSES = [
+  {id:'fsl-pitch',      sec:'fsl', title:'Pitch Building',          url:'https://pitch-building-v1.netlify.app/'},
+  {id:'fsl-snack',      sec:'fsl', title:'Your Snack Brand',        url:'https://your-snack-brand.vercel.app/'},
+  {id:'fsl-launch',     sec:'fsl', title:'Launch Day: Snack Brand', url:'https://launch-day-snack-brand.vercel.app/'},
+  {id:'fsl-library',    sec:'fsl', title:'The Library Sorter',      url:'https://the-library-sorter.vercel.app/'},
+  {id:'fsl-seesaw',     sec:'fsl', title:'Seesaw for Everyone',     url:'https://seesaw-for-everyone.vercel.app/'},
+  {id:'fsl-plate',      sec:'fsl', title:'Create My Plate',         url:'https://create-my-plate.netlify.app/'},
+  {id:'fsl-truthlens',  sec:'fsl', title:'TruthLens',               url:'https://truthlens-v1.netlify.app/'},
+
+  {id:'AAI-MC1', sec:'aai', title:'Applied AI 1: Use It, and Check It', url:'https://aai-tau.vercel.app/course.html#S01', hours:16, nsqf:'NSQF 4 (proposed)', one:'Use an AI app on real tasks and check every answer before you use it.'},
+  {id:'AAI-MC2', sec:'aai', title:'Applied AI 2: Apply It Where It Matters', hours:16, nsqf:'NSQF 4 (proposed)', one:'Use AI for your trade, studies or daily life, then try new tasks on your own.'},
+  {id:'AAI-MC3', sec:'aai', title:'Applied AI 3: Trust, Safety and Harm', hours:16, nsqf:'NSQF 4 (proposed)', one:'Spot wrong AI answers, fake messages and scams, and protect your data.'},
+  {id:'AAI-MC4', sec:'aai', title:'Applied AI 4: Make It Stick', hours:16, nsqf:'NSQF 4 (proposed)', one:'Build and test your own AI method for a task you do every week.'},
+
+  {id:'COM-L12', sec:'comm', title:'Basic and Foundational Workplace Communication', hours:58, nsqf:'NSQF 1-2', one:'Greet people, follow instructions, read notices and fill forms at work.'},
+  {id:'COM-L3',  sec:'comm', title:'Trade and Team Communication', hours:44, nsqf:'NSQF 2.5-3', one:'Talk about trade work, safety, customers and job cards with confidence.'},
+  {id:'COM-L4',  sec:'comm', title:'Supervisory Communication Skills', hours:57, nsqf:'NSQF 3.5-4', one:'Give clear instructions to a team, report upward and write handover notes.'},
+  {id:'COM-L5',  sec:'comm', title:'Junior Management Communication Skills', hours:57, nsqf:'NSQF 4.5-5', one:'Delegate work, train a team and write reports for management.'},
+  {id:'COM-L6',  sec:'comm', title:'Interpersonal Communication for Managers', hours:64, nsqf:'NSQF 5.5-6', one:'Difficult conversations, negotiation and mentoring for managers.'},
+  {id:'COM-L65', sec:'comm', title:'Cross-Cultural and Executive Presence Communication', hours:46, nsqf:'NSQF 6.5', one:'Executive presence and cross-cultural meetings.'},
+  {id:'COM-L7',  sec:'comm', title:'Strategic Negotiation and Crisis Leadership Communication', hours:38, nsqf:'NSQF 7', one:'Negotiation and crisis communication for directors.'},
+  {id:'COM-L8',  sec:'comm', title:'Research, Governance and Thought-Leadership Communication', hours:60, nsqf:'NSQF 8', one:'Academic and governance communication.'},
+
+  {id:'BOT-1', sec:'vibe', title:'SwiftChat Bot Builder', hours:15, nsqf:'NSQF to be confirmed', one:'Design and build a simple chatbot on SwiftChat that answers real questions.'}
+];
+const cxSec = id => CX_SECTIONS.find(s=>s.id===id);
+const cxGet = id => CX_COURSES.find(c=>c.id===id);
+const cxList = sec => CX_COURSES.filter(c=>c.sec===sec && !c.hidden);
+function cxState(){ const u = me(); u.ext = u.ext || {}; u.ext.cx = u.ext.cx || {}; return u.ext.cx; }
+function cxHost(url){ try{ return new URL(url).hostname; }catch(e){ return ''; } }
+
+/* cover art per section: white line icon on the section gradient */
+const CX_ART = {
+  fsl:'<path d="M24 8h16M28 8v14L16 46a4 4 0 0 0 3.6 6h24.8a4 4 0 0 0 3.6-6L36 22V8"/><path d="M21 38h22"/><circle cx="28" cy="44" r="2"/><circle cx="37" cy="46" r="1.5"/>',
+  aai:'<path d="M32 8l4.5 13.5L50 26l-13.5 4.5L32 44l-4.5-13.5L14 26l13.5-4.5z"/><path d="M48 40l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/>',
+  comm:'<path d="M8 14h30a4 4 0 0 1 4 4v14a4 4 0 0 1-4 4H22l-8 7v-7h-6a4 4 0 0 1-4-4V18a4 4 0 0 1 4-4z"/><path d="M46 24h10a4 4 0 0 1 4 4v12a4 4 0 0 1-4 4h-4v6l-7-6h-9a4 4 0 0 1-4-4v-2"/>',
+  vibe:'<path d="M22 18L8 32l14 14M42 18l14 14-14 14M36 12l-8 40"/>'
+};
+function cxCover(c){
+  const s = cxSec(c.sec);
+  return `<div class="cx-cover" style="--c1:${s.c1};--c2:${s.c2};">
+    ${c.img ? `<img src="${esc(c.img)}" alt="" loading="lazy">` : `<svg viewBox="0 0 64 64" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${CX_ART[c.sec]}</svg>`}
+  </div>`;
+}
+
+function cxCard(c, i, n){
+  const s = cxSec(c.sec), st = cxState()[c.id] || {}, live = !!c.url;
+  const status = !live ? `<span class="cx-pill soon">Coming soon</span>`
+    : st.done ? `<span class="cx-pill done">&#10003; Completed</span>`
+    : st.opened ? `<span class="cx-pill go">In progress</span>` : `<span class="cx-pill new">Play now</span>`;
+  const meta = [`${s.unit} ${i+1} of ${n}`, c.hours ? c.hours+' hours' : '', live && !c.hours ? 'Interactive' : '', c.nsqf || ''].filter(Boolean).join(' &middot; ');
+  const q = App._cx.q.trim().toLowerCase(), key = (c.title+' '+(c.one||'')+' '+s.title).toLowerCase();
+  return `<div class="cx-card${live?'':' is-soon'}"${q && !key.includes(q) ? ' hidden' : ''} data-k="${esc(key)}" role="link" tabindex="0" aria-label="${esc(c.title)}${live?'':' (coming soon)'}"
+      onclick="App.cxOpen('${c.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();App.cxOpen('${c.id}');}">
+    <div class="cx-thumb">
+      ${cxCover(c)}
+      ${live && !c.img ? `<iframe class="cx-live" data-src="${esc(c.url)}" title="" tabindex="-1" aria-hidden="true" scrolling="no" sandbox="allow-scripts allow-same-origin" loading="lazy" onload="this.classList.add('on')"></iframe>` : ''}
+      <span class="cx-shield"></span>
+      ${live ? `<span class="cx-playbtn" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></span>` : ''}
+      <span class="cx-tag">${esc(s.title)}</span>
+    </div>
+    <div class="cx-body">
+      <div class="cx-prov">Swift AI Academy</div>
+      <h3>${esc(c.title)}</h3>
+      ${c.one ? `<p class="cx-one">${esc(c.one)}</p>` : ''}
+      <div class="cx-meta">${meta}</div>
+      <div class="cx-foot">${status}</div>
+    </div>
+  </div>`;
+}
+
+App._cx = { q:'' };
+function renderCourses(){
+  const done = CX_COURSES.filter(c=>c.url && (cxState()[c.id]||{}).done).length, playable = CX_COURSES.filter(c=>c.url && !c.hidden).length;
+  const secs = CX_SECTIONS.map(s=>{
+    const all = cxList(s.id), live = all.filter(c=>c.url).length;
+    return `<section class="cx-sec" id="cx-${s.id}">
+      <div class="cx-sec-head"><h2>${esc(s.title)} <span class="cx-count">${all.length}</span></h2><p>${esc(s.sub)}${live ? '' : ' Courses open soon.'}</p></div>
+      <div class="cx-grid">${all.map((c,i)=>cxCard(c, i, all.length)).join('')}</div>
+    </section>`;
+  }).join('');
+  setTimeout(App.cxSearch, 0);
+  return `<div class="shell cx-page">
+    <div class="page-head"><div class="eyebrow">Courses</div><h1>Learn by doing</h1><p class="sub">Every course opens and plays right here on Swift AI Academy. ${done} of ${playable} playable courses completed.</p></div>
+    <div class="cx-tools">
+      <input class="cx-search" type="search" placeholder="Search courses" aria-label="Search courses" value="${esc(App._cx.q)}" oninput="App._cx.q=this.value; App.cxSearch();">
+      <div class="cx-jump">${CX_SECTIONS.map(s=>`<button class="cx-chip" onclick="App.cxJump('${s.id}')">${esc(s.title)}</button>`).join('')}</div>
+    </div>
+    <div id="cx-secs">${secs}<p class="muted" id="cx-empty" style="margin-top:24px;" hidden>No courses match your search.</p></div>
+  </div>`;
+}
+App.cxSearch = function(){
+  const q = App._cx.q.trim().toLowerCase(); let any = false;
+  document.querySelectorAll('.cx-sec').forEach(sec=>{ let n = 0; sec.querySelectorAll('.cx-card').forEach(card=>{ const ok = !q || card.dataset.k.includes(q); card.hidden = !ok; if(ok) n++; }); sec.hidden = !n; if(n) any = true; });
+  const e = document.getElementById('cx-empty'); if(e) e.hidden = any;
+  cxThumbs();
+};
+App.cxJump = function(id){ const el = document.getElementById('cx-'+id); if(el) el.scrollIntoView({behavior:'smooth', block:'start'}); };
+App.cxOpen = function(id){
+  const c = cxGet(id); if(!c) return;
+  if(!c.url){ toast(c.title+' opens soon on Swift AI Academy.'); return; }
+  location.hash = '#/play/'+id;   // same tab, inside the platform
+};
+
+/* live thumbnails: the course site itself, scaled down and inert */
+function cxThumbs(){
+  document.querySelectorAll('.cx-thumb').forEach(t=>{
+    const f = t.querySelector('.cx-live'); if(!f) return;
+    f.style.transform = 'scale('+(t.clientWidth/1280)+')';
+    if(!f.src && f.dataset.src) f.src = f.dataset.src;
+  });
+}
+window.addEventListener('resize', ()=>{ if(location.hash==='#/courses') cxThumbs(); });
+
+/* ---------- player: lives outside #app so re-renders never reload the course ---------- */
+function cxPlayer(){
+  let host = document.getElementById('cxp-host');
+  if(!host){
+    host = document.createElement('div'); host.id = 'cxp-host'; host.hidden = true;
+    host.innerHTML = `<div class="cxp-bar">
+        <button class="cxp-back" onclick="location.hash='#/courses'" aria-label="Back to Courses"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg><span>Courses</span></button>
+        <div class="cxp-t"><small id="cxp-sub"></small><b id="cxp-title"></b></div>
+        <div class="cxp-act">
+          <button class="cxp-btn" id="cxp-prev" onclick="App.cxStep(-1)" aria-label="Previous course"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <button class="cxp-btn" id="cxp-next" onclick="App.cxStep(1)" aria-label="Next course"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></button>
+          <button class="cxp-btn" onclick="App.cxFull()" aria-label="Full screen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+          <button class="cxp-done" id="cxp-done" onclick="App.cxDone()"></button>
+        </div>
+      </div>
+      <div class="cxp-stage"><div class="cxp-load" id="cxp-load"><span></span>Loading course</div>
+        <iframe id="cxp-frame" title="Course" allow="fullscreen; autoplay; clipboard-write; encrypted-media; microphone; camera; web-share" allowfullscreen></iframe></div>`;
+    document.body.appendChild(host);
+    const f = host.querySelector('#cxp-frame');
+    f.addEventListener('load', ()=>{ if(f.src && f.src!=='about:blank') document.getElementById('cxp-load').hidden = true; });
+  }
+  return host;
+}
+function cxSync(){
+  const m = (location.hash||'').match(/^#\/play\/([\w-]+)$/);
+  const c = m && cxGet(m[1]);
+  const on = !!(c && c.url && requireAuth() && STATE.actingRole==='learner');
+  document.body.classList.toggle('cx-playing', on);
+  const host = document.getElementById('cxp-host');
+  if(!on){ if(host && !host.hidden){ host.hidden = true; host.querySelector('#cxp-frame').src = 'about:blank'; host.dataset.id = ''; } return; }
+  const h = cxPlayer(); h.hidden = false;
+  const chrome = document.getElementById('chrome'); h.style.top = (chrome ? chrome.getBoundingClientRect().bottom : 0) + 'px';
+  if(h.dataset.id !== c.id){
+    h.dataset.id = c.id;
+    const s = cxSec(c.sec), list = cxList(c.sec), i = list.indexOf(c);
+    document.getElementById('cxp-sub').textContent = s.title + ' · ' + s.unit + ' ' + (i+1) + ' of ' + list.length;
+    document.getElementById('cxp-title').textContent = c.title;
+    document.getElementById('cxp-load').hidden = false;
+    document.getElementById('cxp-frame').src = c.url;
+    const st = cxState(); st[c.id] = Object.assign({}, st[c.id], {opened:Date.now()}); saveState();
+  }
+  cxPlayerButtons(c);
+}
+function cxPlayerButtons(c){
+  const list = cxList(c.sec).filter(x=>x.url), i = list.indexOf(c), done = !!(cxState()[c.id]||{}).done;
+  document.getElementById('cxp-prev').disabled = i<=0;
+  document.getElementById('cxp-next').disabled = i<0 || i>=list.length-1;
+  const b = document.getElementById('cxp-done');
+  b.classList.toggle('on', done); b.innerHTML = done ? '&#10003; Completed' : 'Mark as complete';
+}
+App.cxStep = function(d){ const c = cxGet((document.getElementById('cxp-host')||{}).dataset.id); if(!c) return; const list = cxList(c.sec).filter(x=>x.url); const n = list[list.indexOf(c)+d]; if(n) location.hash = '#/play/'+n.id; };
+App.cxDone = function(){ const c = cxGet(document.getElementById('cxp-host').dataset.id); if(!c) return; const st = cxState(); const was = !!(st[c.id]||{}).done; st[c.id] = Object.assign({}, st[c.id], {done:!was, doneAt:was?null:Date.now()}); saveState(); cxPlayerButtons(c); toast(was ? 'Marked as not complete' : c.title+' completed'); };
+App.cxFull = function(){ const s = document.querySelector('#cxp-host .cxp-stage'); if(!s) return; (s.requestFullscreen || s.webkitRequestFullscreen || function(){}).call(s); };
+window.addEventListener('resize', ()=>{ const h = document.getElementById('cxp-host'), chrome = document.getElementById('chrome'); if(h && !h.hidden && chrome) h.style.top = chrome.getBoundingClientRect().bottom + 'px'; });
+
+/* ---------- routes, nav tab, v2 styling scope ---------- */
+ROUTES.unshift({re:/^#\/courses$/, fn:function(){ return renderCourses(); }},
+               {re:/^#\/play\/([\w-]+)$/, fn:function(id){ const c = cxGet(id); if(!c || !c.url){ setTimeout(()=>location.replace('#/courses'),0); return ''; } return '<div class="cxp-spacer"></div>'; }});
+const _v2ScopeCx = v2Scope;
+v2Scope = function(){ return _v2ScopeCx() || /^#\/(courses|play\/[\w-]+)$/.test(location.hash||''); };
+const _renderChromeCx = renderChrome;
+renderChrome = function(){
+  _renderChromeCx.apply(this, arguments);
+  const hash = location.hash || '';
+  const nav = document.querySelector('#chrome .navlinks');
+  if(nav && STATE.actingRole==='learner' && requireAuth() && !nav.querySelector('a[href="#/courses"]')){
+    const ex = nav.querySelector('a[href="#/explore"]');
+    if(ex){
+      const a = document.createElement('a'); a.href = '#/courses'; a.textContent = T('Courses','कोर्स');
+      if(/^#\/(courses|play\/)/.test(hash)){ a.className = 'active'; ex.classList.remove('active'); }
+      ex.after(a);
+    }
+  }
+  setTimeout(cxSync, 0);
+};
+try{ if(STATE && requireAuth()){ document.body.classList.toggle('v2', v2Scope()); /^#\/(courses|play\/)/.test(location.hash||'') ? renderAll() : renderChrome(); } }catch(e){ console.error(e); }
+</script>
+<style id="courses-section">
+/* ---------- Courses page ---------- */
+.cx-page .page-head h1{ margin-top:4px; }
+.cx-tools{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin:18px 0 6px; }
+.cx-search{ flex:0 1 300px; height:40px; padding:0 14px; border:1px solid #D5D8DF; border-radius:999px; font:inherit; font-size:14px; background:#fff; color:#141A33; }
+.cx-search:focus{ outline:none; border-color:#386AF6; box-shadow:0 0 0 3px rgba(56,106,246,.18); }
+.cx-jump{ display:flex; gap:8px; flex-wrap:wrap; }
+.cx-chip{ height:36px; padding:0 14px; border:1px solid #D5D8DF; border-radius:999px; background:#fff; font:inherit; font-size:14px; font-weight:500; color:#32304B; cursor:pointer; }
+.cx-chip:hover{ border-color:#386AF6; color:#1339A3; background:#ECF0FF; }
+.cx-sec{ margin-top:36px; scroll-margin-top:84px; }
+.cx-sec-head h2{ font-size:22px; line-height:30px; font-weight:700; color:#141A33; display:flex; align-items:center; gap:10px; }
+.cx-count{ font-size:12px; font-weight:600; color:#1339A3; background:#ECF0FF; border-radius:999px; padding:2px 9px; }
+.cx-sec-head p{ font-size:14px; color:#4A5063; margin-top:4px; }
+.cx-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:20px; margin-top:16px; }
+.cx-card{ display:flex; flex-direction:column; background:#fff; border:1px solid #D5D8DF; border-radius:16px; overflow:hidden; cursor:pointer; transition:box-shadow .15s, transform .15s, border-color .15s; text-align:left; }
+.cx-card:hover{ box-shadow:0 8px 24px rgba(20,26,51,.12); transform:translateY(-2px); border-color:#B8C4F5; }
+.cx-card:focus-visible{ outline:3px solid #386AF6; outline-offset:2px; }
+.cx-card[hidden], .cx-sec[hidden]{ display:none; }
+.cx-card.is-soon{ cursor:default; }
+.cx-card.is-soon:hover{ transform:none; box-shadow:none; border-color:#D5D8DF; }
+.cx-thumb{ position:relative; aspect-ratio:16/10; overflow:hidden; background:#EEF2FF; }
+.cx-cover{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,var(--c1) 0%,var(--c2) 100%); }
+.cx-cover::after{ content:''; position:absolute; right:-18%; bottom:-38%; width:70%; aspect-ratio:1; border-radius:50%; background:rgba(255,255,255,.12); }
+.cx-cover svg{ width:30%; max-width:84px; opacity:.95; position:relative; z-index:1; }
+.cx-cover img{ width:100%; height:100%; object-fit:cover; }
+.cx-live{ position:absolute; left:0; top:0; width:1280px; height:800px; border:0; transform-origin:0 0; pointer-events:none; background:#fff; opacity:0; transition:opacity .4s; }
+.cx-live.on{ opacity:1; }
+.cx-shield{ position:absolute; inset:0; }
+.cx-playbtn{ position:absolute; left:50%; top:50%; width:52px; height:52px; margin:-26px 0 0 -26px; border-radius:50%; background:rgba(20,26,51,.78); color:#fff; display:flex; align-items:center; justify-content:center; opacity:0; transition:opacity .15s; }
+.cx-playbtn svg{ width:24px; height:24px; margin-left:3px; }
+.cx-card:hover .cx-playbtn, .cx-card:focus-visible .cx-playbtn{ opacity:1; }
+.cx-tag{ position:absolute; right:10px; bottom:10px; padding:3px 8px; border-radius:6px; background:#141A33; color:#fff; font-size:11px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; }
+.cx-body{ padding:14px 16px 16px; display:flex; flex-direction:column; gap:4px; flex:1; }
+.cx-prov{ font-size:12px; font-weight:600; color:#4A5063; }
+.cx-body h3{ font-size:16px; line-height:22px; font-weight:700; color:#141A33; }
+.cx-one{ font-size:13px; line-height:19px; color:#4A5063; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.cx-meta{ font-size:12.5px; color:#5F6485; }
+.cx-foot{ margin-top:auto; padding-top:8px; }
+.cx-pill{ display:inline-flex; align-items:center; gap:4px; padding:3px 10px; border-radius:999px; font-size:12px; font-weight:600; }
+.cx-pill.new{ background:#ECF0FF; color:#1339A3; }
+.cx-pill.go{ background:#FFF4D6; color:#7A4F00; }
+.cx-pill.done{ background:#E3F4E8; color:#146C2E; }
+.cx-pill.soon{ background:#F1F2F5; color:#4B5063; }
+
+/* ---------- player ---------- */
+body.cx-playing #app{ min-height:0; padding-bottom:0; }
+body.cx-playing .support-fab, body.cx-playing .support-panel{ display:none !important; }
+#cxp-host{ position:fixed; left:0; right:0; bottom:0; z-index:30; display:flex; flex-direction:column; background:#F4F6FB; }
+#cxp-host[hidden]{ display:none; }
+.cxp-bar{ display:flex; align-items:center; gap:12px; padding:8px 16px; background:#fff; border-bottom:1px solid #D5D8DF; min-height:56px; }
+.cxp-back{ display:inline-flex; align-items:center; gap:4px; height:36px; padding:0 12px 0 6px; border:1px solid #D5D8DF; border-radius:999px; background:#fff; font:inherit; font-size:14px; font-weight:600; color:#32304B; cursor:pointer; }
+.cxp-back svg{ width:20px; height:20px; }
+.cxp-back:hover{ background:#ECF0FF; border-color:#B8C4F5; }
+.cxp-t{ flex:1; min-width:0; display:flex; flex-direction:column; }
+.cxp-t small{ font-size:12px; color:#5F6485; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.cxp-t b{ font-size:15px; color:#141A33; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.cxp-act{ display:flex; gap:8px; align-items:center; }
+.cxp-btn{ width:36px; height:36px; border:1px solid #D5D8DF; border-radius:50%; background:#fff; color:#32304B; display:flex; align-items:center; justify-content:center; cursor:pointer; }
+.cxp-btn svg{ width:18px; height:18px; }
+.cxp-btn:hover:not(:disabled){ background:#ECF0FF; border-color:#B8C4F5; }
+.cxp-btn:disabled{ opacity:.4; cursor:default; }
+.cxp-done{ height:36px; padding:0 16px; border:0; border-radius:999px; background:#386AF6; color:#fff; font:inherit; font-size:14px; font-weight:600; cursor:pointer; white-space:nowrap; }
+.cxp-done:hover{ background:#2548E8; }
+.cxp-done.on{ background:#E3F4E8; color:#146C2E; }
+.cxp-stage{ position:relative; flex:1; background:#fff; }
+.cxp-stage iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; background:#fff; }
+.cxp-load{ position:absolute; inset:0; display:flex; flex-direction:column; gap:12px; align-items:center; justify-content:center; font-size:14px; color:#4A5063; z-index:1; background:#fff; pointer-events:none; }
+.cxp-load[hidden]{ display:none; }
+.cxp-load span{ width:32px; height:32px; border-radius:50%; border:3px solid #ECF0FF; border-top-color:#386AF6; animation:cxspin .8s linear infinite; }
+@keyframes cxspin{ to{ transform:rotate(360deg); } }
+
+@media (max-width:700px){
+  .cx-grid{ grid-template-columns:1fr 1fr; gap:12px; }
+  .cx-body{ padding:10px 12px 12px; }
+  .cx-body h3{ font-size:14px; line-height:19px; }
+  .cx-one{ display:none; }
+  .cx-search{ flex:1 1 100%; }
+  .cx-jump{ flex-wrap:nowrap; overflow-x:auto; margin:0 -16px; padding:0 16px; }
+  .cx-chip{ flex:0 0 auto; }
+  #cxp-host{ bottom:64px; }
+  .cxp-bar{ padding:6px 10px; gap:8px; }
+  .cxp-back span, #cxp-prev, #cxp-next{ display:none; }
+  .cxp-back{ padding:0 6px; }
+  .cxp-done{ padding:0 12px; font-size:13px; }
+  body.v2 .navlinks a[href="#/courses"]{ --ic:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Crect%20x%3D%223%22%20y%3D%225%22%20width%3D%2218%22%20height%3D%2214%22%20rx%3D%222%22/%3E%3Cpath%20d%3D%22M10%209.5v5l4-2.5z%22/%3E%3C/svg%3E"); }
+  body.v2 .navlinks a[href="#/achievements"]{ --ic:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M8%204h8v5a4%204%200%200%201-8%200z%22/%3E%3Cpath%20d%3D%22M8%206H5a3%203%200%200%200%203%204%22/%3E%3Cpath%20d%3D%22M16%206h3a3%203%200%200%201-3%204%22/%3E%3Cpath%20d%3D%22M12%2013v4%22/%3E%3Cpath%20d%3D%22M8%2020h8%22/%3E%3C/svg%3E"); }
+}
+@media (max-width:420px){ .cx-grid{ grid-template-columns:1fr; } }
+</style>
