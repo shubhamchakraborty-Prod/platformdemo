@@ -22,7 +22,7 @@ Career Counselling opens with a choice of English or Hindi.
 
 ## Courses section
 
-The **Courses** tab lists in-house courses in four sections: Future Skills Lab, Applied AI, Communication and Vibe Coding. Courses with a link play inside the platform in the same tab (embedded player with back, previous/next, full screen and Mark as complete). Courses without a link show a cover and "Coming soon".
+The **Courses** tab lists in-house courses in four sections: Future Skills Lab, Applied AI, Communication and Vibe Coding. Courses with a link play inside the platform in the same tab (embedded player with back, previous/next, full screen and Mark as complete). Courses without a link show a cover and "Coming soon". Thumbnails for all 20 courses are in `images/courses/` (800 x 500 WebP).
 
 To add or change a course, edit `CX_COURSES` near the end of `mvp_prd_doc.html`: add `url` to make it playable, `img` to use a photo as its thumbnail, or `hidden:true` to hide it.
 
