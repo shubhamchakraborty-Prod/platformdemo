@@ -1,6 +1,6 @@
 # Swift AI Academy Courses (university share)
 
-One self-contained page with every Swift AI Academy course: Future Skills Lab, Applied AI, Communication and Vibe Coding. No login. Playable courses open on the same page, in the same tab.
+One self-contained page with the Future Skills Lab and Applied AI courses. Communication and Vibe Coding are listed as upcoming. No login. Playable courses open on the same page, in the same tab.
 
 ## Deploy on Netlify
 
@@ -17,7 +17,8 @@ All course data is in `COURSES` near the bottom of `index.html`.
 |---|---|
 | Make a course playable | Add `url:'https://...'` |
 | Change a thumbnail | Put an 800 x 500 WebP in `images/courses/` named after the course `id`, or set `img` |
-| Add a course | Add a line with `id`, `sec` (`fsl`, `aai`, `comm`, `vibe`) and `title` |
+| Add a course | Add a line with `id`, `sec` (`fsl` or `aai`) and `title` |
+| Change the upcoming list | Edit `UPCOMING` in `index.html` |
 
 Each embedded course site must allow being shown inside another page (no `X-Frame-Options: DENY` or restrictive `frame-ancestors`). Default Netlify and Vercel sites allow this.
 

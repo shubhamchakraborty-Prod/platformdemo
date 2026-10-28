@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Swift AI Academy Courses</title>
-<meta name="description" content="Swift AI Academy course catalogue: Future Skills Lab, Applied AI, Communication and Vibe Coding. Playable courses open right on this page.">
+<meta name="description" content="Swift AI Academy courses: Future Skills Lab and Applied AI. Playable courses open right on this page.">
 <link rel="icon" type="image/png" href="images/logo-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -75,6 +75,11 @@ a.card:hover .playbtn, a.card:focus-visible .playbtn{ opacity:1; }
 .pill.done{ background:var(--green-soft); color:var(--green-ink); }
 .pill.soon{ background:var(--grey-soft); color:var(--grey-ink); }
 .empty{ margin-top:32px; color:var(--ink-3); }
+.up-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:16px; margin-top:16px; }
+.up{ display:flex; align-items:flex-start; justify-content:space-between; gap:16px; padding:18px 20px; background:var(--surface); border:1px dashed #B9BFCC; border-radius:16px; }
+.up h3{ font-size:16px; line-height:22px; font-weight:700; }
+.up p{ font-size:13px; line-height:19px; color:var(--ink-3); margin-top:4px; }
+.up .pill{ flex:0 0 auto; }
 .site-foot{ margin-top:56px; padding-top:20px; border-top:1px solid var(--line); font-size:12.5px; color:var(--ink-4); }
 
 /* player */
@@ -113,6 +118,7 @@ body.playing{ overflow:hidden; }
   .body{ padding:10px 12px 12px; }
   .body h3{ font-size:14px; line-height:19px; }
   .one{ display:none; }
+  .up-grid{ grid-template-columns:1fr; }
   .tag{ font-size:10px; right:8px; bottom:8px; }
   .pbar{ padding:6px 10px; gap:8px; }
   .pback span, #prev, #next{ display:none; }
@@ -165,9 +171,12 @@ body.playing{ overflow:hidden; }
 /* ---------- course data: add url to make a course playable, img for its thumbnail ---------- */
 const SECTIONS = [
   {id:'fsl',  title:'Future Skills Lab', sub:'Hands-on labs you play right here.', unit:'Lab', c1:'#0F766E', c2:'#14B8A6'},
-  {id:'aai',  title:'Applied AI',        sub:'Use AI on real tasks, and check it before you trust it.', unit:'Course', c1:'#4C1D95', c2:'#7C3AED'},
-  {id:'comm', title:'Communication',     sub:'Workplace communication, from the shop floor to the boardroom.', unit:'Level', c1:'#0E7490', c2:'#22B8CF'},
-  {id:'vibe', title:'Vibe Coding',       sub:'Build working tools by describing what you want.', unit:'Course', c1:'#0E1B5C', c2:'#386AF6'}
+  {id:'aai',  title:'Applied AI',        sub:'Use AI on real tasks, and check it before you trust it.', unit:'Course', c1:'#4C1D95', c2:'#7C3AED'}
+];
+/* tracks announced as upcoming: named only, no course cards */
+const UPCOMING = [
+  {title:'Communication', sub:'Eight levels of workplace communication, from the shop floor to the boardroom.'},
+  {title:'Vibe Coding',   sub:'Build working tools by describing what you want.'}
 ];
 const COURSES = [
   {id:'pitch-building',         sec:'fsl', title:'Pitch Building',          url:'https://pitch-building-v1.netlify.app/'},
@@ -182,17 +191,6 @@ const COURSES = [
   {id:'applied-ai-2-apply-it-where-it-matters', sec:'aai', title:'Applied AI 2: Apply It Where It Matters', hours:16, nsqf:'NSQF 4 (proposed)', one:'Use AI for your trade, studies or daily life, then try new tasks on your own.'},
   {id:'applied-ai-3-trust-safety-and-harm',     sec:'aai', title:'Applied AI 3: Trust, Safety and Harm', hours:16, nsqf:'NSQF 4 (proposed)', one:'Spot wrong AI answers, fake messages and scams, and protect your data.'},
   {id:'applied-ai-4-make-it-stick',             sec:'aai', title:'Applied AI 4: Make It Stick', hours:16, nsqf:'NSQF 4 (proposed)', one:'Build and test your own AI method for a task you do every week.'},
-
-  {id:'basic-foundational-workplace-communication',            sec:'comm', title:'Basic and Foundational Workplace Communication', hours:58, nsqf:'NSQF 1-2', one:'Greet people, follow instructions, read notices and fill forms at work.'},
-  {id:'trade-team-communication',                              sec:'comm', title:'Trade and Team Communication', hours:44, nsqf:'NSQF 2.5-3', one:'Talk about trade work, safety, customers and job cards with confidence.'},
-  {id:'supervisory-communication-skills',                      sec:'comm', title:'Supervisory Communication Skills', hours:57, nsqf:'NSQF 3.5-4', one:'Give clear instructions to a team, report upward and write handover notes.'},
-  {id:'junior-management-communication-skills',                sec:'comm', title:'Junior Management Communication Skills', hours:57, nsqf:'NSQF 4.5-5', one:'Delegate work, train a team and write reports for management.'},
-  {id:'interpersonal-communication-for-managers',              sec:'comm', title:'Interpersonal Communication for Managers', hours:64, nsqf:'NSQF 5.5-6', one:'Difficult conversations, negotiation and mentoring for managers.'},
-  {id:'cross-cultural-executive-presence-communication',       sec:'comm', title:'Cross-Cultural and Executive Presence Communication', hours:46, nsqf:'NSQF 6.5', one:'Executive presence and cross-cultural meetings.'},
-  {id:'strategic-negotiation-crisis-leadership-communication', sec:'comm', title:'Strategic Negotiation and Crisis Leadership Communication', hours:38, nsqf:'NSQF 7', one:'Negotiation and crisis communication for directors.'},
-  {id:'research-governance-thought-leadership-communication',  sec:'comm', title:'Research, Governance and Thought-Leadership Communication', hours:60, nsqf:'NSQF 8', one:'Academic and governance communication.'},
-
-  {id:'swiftchat-bot-builder', sec:'vibe', title:'SwiftChat Bot Builder', hours:15, nsqf:'NSQF to be confirmed', one:'Design and build a simple chatbot on SwiftChat that answers real questions.'}
 ];
 COURSES.forEach(c=>{ if(!c.img) c.img = 'images/courses/'+c.id+'.webp'; });
 
@@ -212,7 +210,7 @@ function toast(msg){ const t = document.createElement('div'); t.className = 'toa
 /* ---------- catalogue ---------- */
 function card(c, i, n){
   const s = secOf(c.sec), p = progress[c.id] || {}, live = !!c.url;
-  const pill = !live ? '<span class="pill soon">Coming soon</span>'
+  const pill = !live ? '<span class="pill soon">Upcoming</span>'
     : p.done ? '<span class="pill done">&#10003; Completed</span>'
     : p.opened ? '<span class="pill go">In progress</span>' : '<span class="pill new">Play now</span>';
   const meta = [s.unit+' '+(i+1)+' of '+n, c.hours ? c.hours+' hours' : 'Interactive', c.nsqf].filter(Boolean).join(' &middot; ');
@@ -231,24 +229,27 @@ function card(c, i, n){
     </div>`;
   return live
     ? `<a class="card" href="#/play/${c.id}" data-k="${esc(key)}">${inner}</a>`
-    : `<div class="card soon" data-k="${esc(key)}" tabindex="0" role="button" aria-label="${esc(c.title)}, coming soon" onclick="soon('${c.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();soon('${c.id}');}">${inner}</div>`;
+    : `<div class="card soon" data-k="${esc(key)}" tabindex="0" role="button" aria-label="${esc(c.title)}, upcoming" onclick="soon('${c.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();soon('${c.id}');}">${inner}</div>`;
 }
 function renderCatalogue(){
-  $('topnav').innerHTML = SECTIONS.map(s=>`<a href="#${s.id}" onclick="event.preventDefault(); jump('${s.id}')">${esc(s.title)}</a>`).join('');
+  $('topnav').innerHTML = [...SECTIONS, {id:'upcoming', title:'Upcoming'}].map(s=>`<a href="#${s.id}" onclick="event.preventDefault(); jump('${s.id}')">${esc(s.title)}</a>`).join('');
   const playable = COURSES.filter(c=>c.url).length, done = COURSES.filter(c=>c.url && (progress[c.id]||{}).done).length;
-  $('stats').innerHTML = `<span class="stat"><b>${COURSES.length}</b> courses</span><span class="stat"><b>${SECTIONS.length}</b> sections</span><span class="stat"><b>${playable}</b> playable now</span>${done ? `<span class="stat"><b>${done}</b> completed</span>` : ''}`;
+  $('stats').innerHTML = `<span class="stat"><b>${COURSES.length}</b> courses</span><span class="stat"><b>${playable}</b> playable now</span><span class="stat"><b>${UPCOMING.length}</b> upcoming tracks</span>${done ? `<span class="stat"><b>${done}</b> completed</span>` : ''}`;
   $('sections').innerHTML = SECTIONS.map(s=>{
-    const all = inSec(s.id), live = all.some(c=>c.url);
+    const all = inSec(s.id);
     return `<section class="sec" id="sec-${s.id}" aria-labelledby="h-${s.id}">
-      <div class="sec-head"><h2 id="h-${s.id}">${esc(s.title)} <span class="count">${all.length}</span></h2><p>${esc(s.sub)}${live ? '' : ' Courses open soon.'}</p></div>
+      <div class="sec-head"><h2 id="h-${s.id}">${esc(s.title)} <span class="count">${all.length}</span></h2><p>${esc(s.sub)}</p></div>
       <div class="grid">${all.map((c,i)=>card(c, i, all.length)).join('')}</div>
     </section>`;
-  }).join('');
+  }).join('') + `<section class="sec upcoming" id="sec-upcoming" aria-labelledby="h-upcoming">
+      <div class="sec-head"><h2 id="h-upcoming">Upcoming</h2><p>More Swift AI Academy tracks on the way.</p></div>
+      <div class="up-grid">${UPCOMING.map(u=>`<div class="up"><div><h3>${esc(u.title)}</h3><p>${esc(u.sub)}</p></div><span class="pill soon">Upcoming</span></div>`).join('')}</div>
+    </section>`;
   filter();
 }
 function filter(){
   const q = $('search').value.trim().toLowerCase(); let any = false;
-  document.querySelectorAll('.sec').forEach(sec=>{
+  document.querySelectorAll('.sec:not(.upcoming)').forEach(sec=>{
     let n = 0;
     sec.querySelectorAll('.card').forEach(el=>{ const ok = !q || el.dataset.k.includes(q); el.hidden = !ok; if(ok) n++; });
     sec.hidden = !n; if(n) any = true;
@@ -256,7 +257,7 @@ function filter(){
   $('empty').hidden = any;
 }
 function jump(id){ const el = $('sec-'+id); if(el) el.scrollIntoView({behavior:'smooth', block:'start'}); }
-function soon(id){ toast(byId(id).title+' opens soon.'); }
+function soon(id){ toast(byId(id).title+' is upcoming.'); }
 $('search').addEventListener('input', filter);
 
 /* ---------- player: same tab, same page ---------- */
